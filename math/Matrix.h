@@ -7,12 +7,29 @@
 
 #include <array>
 #include <ostream>
+#include <functional>
 
 template<int ROWS, int COLS>
 class Matrix
 {
 private:
     std::array<std::array<double, COLS>, ROWS> matrix;
+
+    Matrix<ROWS, COLS>
+    calculate(const Matrix<ROWS, COLS> &mat, const std::function<double(double, double)> &binaryOperation)
+    {
+        Matrix<ROWS, COLS> result{};
+
+        for (int i = 0; i < ROWS; ++i)
+        {
+            for (int j = 0; j < COLS; ++j)
+            {
+                result[i][j] = binaryOperation(matrix[i][j], mat[i][j]);
+            }
+        }
+
+        return result;
+    }
 
 public:
     explicit Matrix(const std::array<std::array<double, COLS>, ROWS> &matrix)
@@ -25,9 +42,9 @@ public:
 
     Matrix &operator*(int number)
     {
-        for (int i = 0; i < matrix.size(); i++)
+        for (int i = 0; i < matrix.size(); ++i)
         {
-            for (int j = 0; j < matrix[0].size(); j++)
+            for (int j = 0; j < matrix[0].size(); ++j)
             {
                 matrix[i][j] *= number;
             }
@@ -42,16 +59,16 @@ public:
     }
 
     template<int R, int C>
-    Matrix<ROWS, C> operator*(Matrix<R, C> &mat)
+    Matrix<ROWS, C> operator*(Matrix<R, C> &mat) const
     {
         Matrix<ROWS, C> result{};
 
-        for (int i = 0; i < ROWS; i++)
+        for (int i = 0; i < ROWS; ++i)
         {
-            for (int j = 0; j < C; j++)
+            for (int j = 0; j < C; ++j)
             {
                 double sum = 0;
-                for (int k = 0; k < COLS; k++)
+                for (int k = 0; k < COLS; ++k)
                 {
                     sum += matrix[i][k] * mat[k][j];
                 }
@@ -60,6 +77,20 @@ public:
         }
 
         return result;
+    }
+
+    Matrix<ROWS, COLS> operator+(const Matrix<ROWS, COLS> &mat) const
+    {
+        return calculate(mat, [](double a, double b) {
+            return a + b;
+        });
+    }
+
+    Matrix<ROWS, COLS> operator-(const Matrix<ROWS, COLS> &mat) const
+    {
+        return calculate(mat, [](double a, double b) {
+            return a - b;
+        });
     }
 
     friend std::ostream &operator<<(std::ostream &os, const Matrix &mat)
