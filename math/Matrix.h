@@ -96,8 +96,8 @@ public:
         return m_Matrix[index];
     }
 
-    template<int R, int C>
-    Matrix<ROWS, C> operator*(Matrix<R, C> &matrix) const
+    template<int C>
+    Matrix<ROWS, C> operator*(Matrix<COLS, C> &matrix) const
     {
         Matrix<ROWS, C> result{};
 
