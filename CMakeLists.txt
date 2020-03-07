@@ -3,4 +3,4 @@ project(NeuralNetwork)
 
 set(CMAKE_CXX_STANDARD 20)
 
-add_executable(NeuralNetwork main.cpp)
+add_executable(NeuralNetwork main.cpp math/Vector.h math/Matrix.h)
