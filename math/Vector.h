@@ -12,17 +12,24 @@ template<int N>
 class Vector
 {
 private:
-    std::array<double, N> vector;
+    std::array<double, N> m_Vector;
 
 public:
     explicit Vector(const std::array<double, N> &vector)
-        : vector(vector)
+            : m_Vector(vector)
     {
+    }
+
+    Vector() = default;
+
+    double &operator[](int index)
+    {
+        return m_Vector[index];
     }
 
     friend std::ostream &operator<<(std::ostream &os, const Vector &vec)
     {
-        for (auto const &element : vec.vector)
+        for (auto const &element : vec.m_Vector)
         {
             os << element << ' ';
         }

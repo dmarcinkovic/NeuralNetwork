@@ -5,27 +5,16 @@
 
 int main()
 {
-    Vector<3> vector({1, 2, 3});
-
-    std::cout << vector << "\n";
-
-    Matrix<3, 2> matrix({std::array<double, 2>{3, 4}, {1, 2}, {0.5, 0.3}});
+    Matrix<2,2> matrix({std::array<double, 2>{2,1}, {3,1}});
+    Vector<2> vector({1, 1});
 
     std::cout << matrix << "\n";
 
-    auto result = Matrix<3, 2>::transpose(matrix);
+    std::cout << vector << "\n";
 
-    std::cout << result << "\n";
+    auto resultVector = matrix * vector;
 
-    result.map([](double a) {
-        return a * (a - 1);
-    });
-
-    std::cout << result << "\n";
-
-    Matrix<3, 3> randomMatrix = Matrix<3, 3>::getRandomMatrix(-1, 1);
-
-    std::cout << randomMatrix << "\n";
+    std::cout << resultVector << "\n";
 
     return 0;
 }

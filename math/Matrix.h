@@ -10,6 +10,8 @@
 #include <functional>
 #include <random>
 
+#include "Vector.h"
+
 template<int ROWS, int COLS>
 class Matrix
 {
@@ -109,6 +111,21 @@ public:
                     sum += m_Matrix[i][k] * matrix[k][j];
                 }
                 result[i][j] = sum;
+            }
+        }
+
+        return result;
+    }
+
+    Vector<ROWS> operator*(Vector<COLS> &vector)
+    {
+        Vector<ROWS> result{};
+
+        for (int i = 0; i < ROWS; ++i)
+        {
+            for (int j = 0; j < COLS; ++j)
+            {
+                result[i] += vector[i] * m_Matrix[i][j];
             }
         }
 
