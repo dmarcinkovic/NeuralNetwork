@@ -11,6 +11,7 @@
 #include <random>
 
 #include "Vector.h"
+#include "../toolbox/Random.h"
 
 template<int ROWS, int COLS>
 class Matrix
@@ -40,28 +41,6 @@ private:
                 result[i][j] = m_Matrix[i][j] * number;
             }
         }
-    }
-
-    static Matrix<ROWS, COLS> mapValues(Matrix<ROWS, COLS> &matrix, const std::function<double(double)> &function)
-    {
-        for (int i = 0; i < ROWS; ++i)
-        {
-            for (int j = 0; j < COLS; ++j)
-            {
-                matrix[i][j] = function(matrix[i][j]);
-            }
-        }
-
-        return matrix;
-    }
-
-    static double getRandomNumber(double rangeStart, double rangeEnd)
-    {
-        std::random_device device;
-        std::mt19937_64 mt(device());
-        std::uniform_real_distribution<double> distribution(rangeStart, rangeEnd);
-
-        return distribution(mt);
     }
 
 public:
@@ -187,19 +166,6 @@ public:
         return result;
     }
 
-    void map(const std::function<double(double)> &function)
-    {
-        *this = mapValues(*this, function);
-    }
-
-    static Matrix<ROWS, COLS> map(Matrix<ROWS, COLS> &matrix, const std::function<double(double)> &function)
-    {
-        Matrix<ROWS, COLS> result{};
-
-        result = mapValues(matrix, function);
-        return result;
-    }
-
     static Matrix<ROWS, COLS> getRandomMatrix(double rangeStart, double rangeEnd)
     {
         Matrix<ROWS, COLS> result{};
@@ -208,7 +174,7 @@ public:
         {
             for (int j = 0; j < COLS; ++j)
             {
-                result[i][j] = getRandomNumber(rangeStart, rangeEnd);
+                result[i][j] = Random::getRandomNumber(rangeStart, rangeEnd);
             }
         }
 
@@ -223,7 +189,7 @@ public:
             {
                 os << element << ' ';
             }
-            std::cout << '\n';
+            os  << '\n';
         }
 
         return os;
