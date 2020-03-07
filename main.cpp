@@ -17,11 +17,15 @@ int main()
 
     std::cout << result << "\n";
 
-    result.map([](double a){
+    result.map([](double a) {
         return a * (a - 1);
     });
 
     std::cout << result << "\n";
+
+    Matrix<3, 3> randomMatrix = Matrix<3, 3>::getRandomMatrix(-1, 1);
+
+    std::cout << randomMatrix << "\n";
 
     return 0;
 }

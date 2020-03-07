@@ -8,6 +8,7 @@
 #include <array>
 #include <ostream>
 #include <functional>
+#include <random>
 
 template<int ROWS, int COLS>
 class Matrix
@@ -39,7 +40,7 @@ private:
         }
     }
 
-    static Matrix<ROWS,COLS> mapValues(Matrix<ROWS,COLS> &matrix, const std::function<double(double)> &function)
+    static Matrix<ROWS, COLS> mapValues(Matrix<ROWS, COLS> &matrix, const std::function<double(double)> &function)
     {
         for (int i = 0; i < ROWS; ++i)
         {
@@ -50,6 +51,15 @@ private:
         }
 
         return matrix;
+    }
+
+    static double getRandomNumber(double rangeStart, double rangeEnd)
+    {
+        std::random_device device;
+        std::mt19937_64 mt(device());
+        std::uniform_real_distribution<double> distribution(rangeStart, rangeEnd);
+
+        return distribution(mt);
     }
 
 public:
@@ -170,6 +180,21 @@ public:
         Matrix<ROWS, COLS> result{};
 
         result = mapValues(matrix, function);
+        return result;
+    }
+
+    static Matrix<ROWS, COLS> getRandomMatrix(double rangeStart, double rangeEnd)
+    {
+        Matrix<ROWS, COLS> result{};
+
+        for (int i = 0; i < ROWS; ++i)
+        {
+            for (int j = 0; j < COLS; ++j)
+            {
+                result[i][j] = getRandomNumber(rangeStart, rangeEnd);
+            }
+        }
+
         return result;
     }
 
