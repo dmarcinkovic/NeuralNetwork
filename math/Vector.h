@@ -8,7 +8,7 @@
 #include <array>
 #include <ostream>
 #include <functional>
-#include "../toolbox/Random.h"
+#include "../util/Util.h"
 
 template<int N>
 class Vector
@@ -52,9 +52,7 @@ public:
     {
         Vector<N> result{};
 
-        calculate(result, vector, [](double a, double b) {
-            return a + b;
-        });
+        calculate(result, vector, Util::add());
 
         return result;
     }
@@ -65,7 +63,7 @@ public:
 
         for (int i = 0; i < N; ++i)
         {
-            result[i] = Random::getRandomNumber(-1, 1);
+            result[i] = Util::getRandomNumber(-1, 1);
         }
 
         return result;

@@ -20,13 +20,6 @@ private:
     Vector<HIDDEN> m_InputBias;
     Vector<OUTPUT> m_HiddenBias;
 
-    static std::function<double(double)> getSigmoid()
-    {
-        return [](double x) {
-            return 1.0 / (1.0 + std::exp(-x));
-        };
-    }
-
 public:
     NeuralNetwork()
     {
@@ -41,10 +34,10 @@ public:
     void feedForward(Vector<N> &inputNodes)
     {
         auto hiddenNodes = m_HiddenInputWeights * inputNodes + m_InputBias;
-        hiddenNodes.map(getSigmoid());
+        hiddenNodes.map(Util::getSigmoid());
 
         auto outputNodes = m_OutputHiddenWeights * hiddenNodes + m_HiddenBias;
-        outputNodes.map(getSigmoid());
+        outputNodes.map(Util::getSigmoid());
 
         std::cout << "Output nodes\n";
         std::cout << outputNodes << "\n";

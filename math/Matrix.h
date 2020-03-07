@@ -11,7 +11,7 @@
 #include <random>
 
 #include "Vector.h"
-#include "../toolbox/Random.h"
+#include "../util/Util.h"
 
 template<int ROWS, int COLS>
 class Matrix
@@ -52,9 +52,7 @@ public:
 
     Matrix<ROWS, COLS> &operator*=(double number)
     {
-        calculate(*this, number, [](double a, double b) {
-            return a * b;
-        });
+        calculate(*this, number, Util::multiply());
 
         return *this;
     }
@@ -63,9 +61,7 @@ public:
     {
         Matrix<ROWS, COLS> result{};
 
-        calculate(result, number, [](double a, double b) {
-            return a * b;
-        });
+        calculate(result, number, Util::multiply());
 
         return result;
     }
@@ -115,18 +111,14 @@ public:
     {
         Matrix<ROWS, COLS> result;
 
-        calculate(result, matrix, [](double a, double b) {
-            return a + b;
-        });
+        calculate(result, matrix, Util::add());
 
         return result;
     }
 
     Matrix<ROWS, COLS> &operator+=(const Matrix<ROWS, COLS> &matrix)
     {
-        calculate(*this, matrix, [](double a, double b) {
-            return a + b;
-        });
+        calculate(*this, matrix, Util::add());
 
         return *this;
     }
@@ -135,18 +127,14 @@ public:
     {
         Matrix<ROWS, COLS> result;
 
-        calculate(result, matrix, [](double a, double b) {
-            return a - b;
-        });
+        calculate(result, matrix, Util::subtract());
 
         return result;
     }
 
     Matrix<ROWS, COLS> &operator-=(const Matrix<ROWS, COLS> &matrix)
     {
-        calculate(*this, matrix, [](double a, double b) {
-            return a - b;
-        });
+        calculate(*this, matrix, Util::subtract());
 
         return *this;
     }
@@ -174,7 +162,7 @@ public:
         {
             for (int j = 0; j < COLS; ++j)
             {
-                result[i][j] = Random::getRandomNumber(rangeStart, rangeEnd);
+                result[i][j] = Util::getRandomNumber(rangeStart, rangeEnd);
             }
         }
 
@@ -189,7 +177,7 @@ public:
             {
                 os << element << ' ';
             }
-            os  << '\n';
+            os << '\n';
         }
 
         return os;
