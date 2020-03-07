@@ -13,27 +13,23 @@ template<int ROWS, int COLS>
 class Matrix
 {
 private:
-    std::array<std::array<double, COLS>, ROWS> matrix;
+    std::array<std::array<double, COLS>, ROWS> m_Matrix;
 
-    Matrix<ROWS, COLS>
-    calculate(const Matrix<ROWS, COLS> &mat, const std::function<double(double, double)> &binaryOperation) const
+    void calculate(Matrix<ROWS, COLS> &result, const Matrix<ROWS, COLS> &matrix,
+                   const std::function<double(double, double)> &binaryOperation) const
     {
-        Matrix<ROWS, COLS> result{};
-
         for (int i = 0; i < ROWS; ++i)
         {
             for (int j = 0; j < COLS; ++j)
             {
-                result[i][j] = binaryOperation(matrix[i][j], mat.matrix[i][j]);
+                result[i][j] = binaryOperation(m_Matrix[i][j], matrix.m_Matrix[i][j]);
             }
         }
-
-        return result;
     }
 
 public:
     explicit Matrix(const std::array<std::array<double, COLS>, ROWS> &matrix)
-            : matrix(matrix)
+            : m_Matrix(matrix)
     {
 
     }
@@ -42,11 +38,11 @@ public:
 
     Matrix &operator*(int number)
     {
-        for (int i = 0; i < matrix.size(); ++i)
+        for (int i = 0; i < m_Matrix.size(); ++i)
         {
-            for (int j = 0; j < matrix[0].size(); ++j)
+            for (int j = 0; j < m_Matrix[0].size(); ++j)
             {
-                matrix[i][j] *= number;
+                m_Matrix[i][j] *= number;
             }
         }
 
@@ -55,11 +51,11 @@ public:
 
     std::array<double, COLS> &operator[](int index)
     {
-        return matrix[index];
+        return m_Matrix[index];
     }
 
     template<int R, int C>
-    Matrix<ROWS, C> operator*(Matrix<R, C> &mat) const
+    Matrix<ROWS, C> operator*(Matrix<R, C> &matrix) const
     {
         Matrix<ROWS, C> result{};
 
@@ -70,7 +66,7 @@ public:
                 double sum = 0;
                 for (int k = 0; k < COLS; ++k)
                 {
-                    sum += matrix[i][k] * mat[k][j];
+                    sum += m_Matrix[i][k] * matrix[k][j];
                 }
                 result[i][j] = sum;
             }
@@ -79,35 +75,49 @@ public:
         return result;
     }
 
-    Matrix<ROWS, COLS> operator+(const Matrix<ROWS, COLS> &mat) const
+    Matrix<ROWS, COLS> operator+(const Matrix<ROWS, COLS> &matrix) const
     {
-        return calculate(mat, [](double a, double b) {
+        Matrix<ROWS, COLS> result;
+
+        calculate(result, matrix, [](double a, double b) {
             return a + b;
         });
+
+        return result;
     }
 
-    Matrix<ROWS, COLS> &operator+=(const Matrix<ROWS, COLS> &mat)
+    Matrix<ROWS, COLS> &operator+=(const Matrix<ROWS, COLS> &matrix)
     {
-        *this = *this + mat;
+        calculate(*this, matrix, [](double a, double b) {
+            return a + b;
+        });
+
         return *this;
     }
 
-    Matrix<ROWS, COLS> operator-(const Matrix<ROWS, COLS> &mat) const
+    Matrix<ROWS, COLS> operator-(const Matrix<ROWS, COLS> &matrix) const
     {
-        return calculate(mat, [](double a, double b) {
+        Matrix<ROWS, COLS> result;
+
+        calculate(result, matrix, [](double a, double b) {
             return a - b;
         });
+
+        return result;
     }
 
-    Matrix<ROWS, COLS> operator-=(const Matrix<ROWS, COLS> &mat)
+    Matrix<ROWS, COLS> &operator-=(const Matrix<ROWS, COLS> &matrix)
     {
-        *this = *this - mat;
+        calculate(*this, matrix, [](double a, double b) {
+            return a - b;
+        });
+
         return *this;
     }
 
-    friend std::ostream &operator<<(std::ostream &os, const Matrix &mat)
+    friend std::ostream &operator<<(std::ostream &os, const Matrix &matrix)
     {
-        for (auto const &array : mat.matrix)
+        for (auto const &array : matrix.m_Matrix)
         {
             for (auto const &element : array)
             {
