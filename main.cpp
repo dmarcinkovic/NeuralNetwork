@@ -12,8 +12,14 @@ int main()
     Matrix<3, 2> matrix({std::array<double, 2>{3, 4}, {1, 2}, {0.5, 0.3}});
 
     std::cout << matrix << "\n";
-    
+
     auto result = Matrix<3, 2>::transpose(matrix);
+
+    std::cout << result << "\n";
+
+    result.map([](double a){
+        return a * (a - 1);
+    });
 
     std::cout << result << "\n";
 

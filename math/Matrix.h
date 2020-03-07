@@ -39,6 +39,19 @@ private:
         }
     }
 
+    static Matrix<ROWS,COLS> mapValues(Matrix<ROWS,COLS> &matrix, const std::function<double(double)> &function)
+    {
+        for (int i = 0; i < ROWS; ++i)
+        {
+            for (int j = 0; j < COLS; ++j)
+            {
+                matrix[i][j] = function(matrix[i][j]);
+            }
+        }
+
+        return matrix;
+    }
+
 public:
     explicit Matrix(const std::array<std::array<double, COLS>, ROWS> &matrix)
             : m_Matrix(matrix)
@@ -144,6 +157,19 @@ public:
             }
         }
 
+        return result;
+    }
+
+    void map(const std::function<double(double)> &function)
+    {
+        *this = mapValues(*this, function);
+    }
+
+    static Matrix<ROWS, COLS> map(Matrix<ROWS, COLS> &matrix, const std::function<double(double)> &function)
+    {
+        Matrix<ROWS, COLS> result{};
+
+        result = mapValues(matrix, function);
         return result;
     }
 
