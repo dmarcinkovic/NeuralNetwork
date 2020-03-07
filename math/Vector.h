@@ -26,6 +26,7 @@ public:
         {
             os << element << ' ';
         }
+        os << '\n';
 
         return os;
     }
