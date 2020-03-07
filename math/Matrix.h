@@ -16,7 +16,7 @@ private:
     std::array<std::array<double, COLS>, ROWS> matrix;
 
     Matrix<ROWS, COLS>
-    calculate(const Matrix<ROWS, COLS> &mat, const std::function<double(double, double)> &binaryOperation)
+    calculate(const Matrix<ROWS, COLS> &mat, const std::function<double(double, double)> &binaryOperation) const
     {
         Matrix<ROWS, COLS> result{};
 
@@ -24,7 +24,7 @@ private:
         {
             for (int j = 0; j < COLS; ++j)
             {
-                result[i][j] = binaryOperation(matrix[i][j], mat[i][j]);
+                result[i][j] = binaryOperation(matrix[i][j], mat.matrix[i][j]);
             }
         }
 
@@ -86,11 +86,23 @@ public:
         });
     }
 
+    Matrix<ROWS, COLS> &operator+=(const Matrix<ROWS, COLS> &mat)
+    {
+        *this = *this + mat;
+        return *this;
+    }
+
     Matrix<ROWS, COLS> operator-(const Matrix<ROWS, COLS> &mat) const
     {
         return calculate(mat, [](double a, double b) {
             return a - b;
         });
+    }
+
+    Matrix<ROWS, COLS> operator-=(const Matrix<ROWS, COLS> &mat)
+    {
+        *this = *this - mat;
+        return *this;
     }
 
     friend std::ostream &operator<<(std::ostream &os, const Matrix &mat)
