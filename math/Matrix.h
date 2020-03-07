@@ -132,6 +132,21 @@ public:
         return *this;
     }
 
+    static Matrix<COLS, ROWS> transpose(Matrix<ROWS, COLS> &matrix)
+    {
+        Matrix<COLS, ROWS> result{};
+
+        for (int i = 0; i < COLS; ++i)
+        {
+            for (int j = 0; j < ROWS; ++j)
+            {
+                result[i][j] = matrix[j][i];
+            }
+        }
+
+        return result;
+    }
+
     friend std::ostream &operator<<(std::ostream &os, const Matrix &matrix)
     {
         for (auto const &array : matrix.m_Matrix)
