@@ -27,26 +27,43 @@ private:
         }
     }
 
-public:
-    explicit Matrix(const std::array<std::array<double, COLS>, ROWS> &matrix)
-            : m_Matrix(matrix)
-    {
-
-    }
-
-    Matrix() = default;
-
-    Matrix &operator*(int number)
+    void calculate(Matrix<ROWS, COLS> &result, double number,
+                   const std::function<double(double, double)> &binaryOperation) const
     {
         for (int i = 0; i < m_Matrix.size(); ++i)
         {
             for (int j = 0; j < m_Matrix[0].size(); ++j)
             {
-                m_Matrix[i][j] *= number;
+                result[i][j] = m_Matrix[i][j] * number;
             }
         }
+    }
+
+public:
+    explicit Matrix(const std::array<std::array<double, COLS>, ROWS> &matrix)
+            : m_Matrix(matrix)
+    {}
+
+    Matrix() = default;
+
+    Matrix<ROWS, COLS> &operator*=(double number)
+    {
+        calculate(*this, number, [](double a, double b) {
+            return a * b;
+        });
 
         return *this;
+    }
+
+    Matrix<ROWS, COLS> operator*(int number)
+    {
+        Matrix<ROWS, COLS> result{};
+
+        calculate(result, number, [](double a, double b) {
+            return a * b;
+        });
+
+        return result;
     }
 
     std::array<double, COLS> &operator[](int index)

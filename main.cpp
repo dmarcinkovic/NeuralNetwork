@@ -10,9 +10,10 @@ int main()
     std::cout << vector << "\n";
 
     Matrix<2, 2> matrix1({std::array<double, 2>{1, 1}, {3, 4}});
+    matrix1 *= 2;
     Matrix<2, 2> matrix2({std::array<double, 2>{3, 4}, {1, 2}});
 
-    matrix1 += matrix2;
+    matrix1 = matrix2 * 2;
 
     std::cout << matrix1 << "\n";
 
