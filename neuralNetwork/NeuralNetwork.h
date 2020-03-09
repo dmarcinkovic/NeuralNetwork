@@ -30,8 +30,7 @@ public:
         m_HiddenBias = Vector<OUTPUT>::getRandomVector(-1, 1);
     }
 
-    template<int N>
-    void feedForward(Vector<N> &inputNodes)
+    void feedForward(Vector<INPUT> &inputNodes)
     {
         auto hiddenNodes = m_HiddenInputWeights * inputNodes + m_InputBias;
         hiddenNodes.map(Util::getSigmoid());
@@ -41,6 +40,11 @@ public:
 
         std::cout << "Output nodes\n";
         std::cout << outputNodes << "\n";
+    }
+
+    void backPropagation(Vector<OUTPUT> &answer)
+    {
+        
     }
 };
 
