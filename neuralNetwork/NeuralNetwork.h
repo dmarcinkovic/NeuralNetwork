@@ -22,6 +22,7 @@ private:
     Vector<HIDDEN> m_InputBias;
     Vector<OUTPUT> m_HiddenBias;
 
+    Vector<INPUT> m_InputNodes;
     Vector<HIDDEN> m_HiddenNodes;
     Vector<OUTPUT> m_OutputNodes;
 
@@ -37,6 +38,8 @@ public:
 
     void feedForward(Vector<INPUT> &inputNodes)
     {
+        m_InputNodes = inputNodes;
+
         m_HiddenNodes = m_InputHiddenWeights * inputNodes + m_InputBias;
         m_HiddenNodes.map(Util::getSigmoid());
 
@@ -53,8 +56,9 @@ public:
                 outputError * learningRate * outputNodesDerivation * m_HiddenNodes.transpose();
 
         Vector<HIDDEN> hiddenError = m_HiddenOutputWeights.transpose() * outputError;
-//        Vector<HIDDEN> hiddenNodesDerivation = Vector<HIDDEN>::map(m_HiddenNodes,Util::getSigmoidDerivation());
-//        Matrix<HIDDEN, OUTPUT> deltaInputsHiddenWeights =
+        Vector<HIDDEN> hiddenNodesDerivation = Vector<HIDDEN>::map(m_HiddenNodes,Util::getSigmoidDerivation());
+        Matrix<HIDDEN, INPUT> deltaInputsHiddenWeights =
+                hiddenError * learningRate * hiddenNodesDerivation * m_InputNodes.transpose();
     }
 
 private:
