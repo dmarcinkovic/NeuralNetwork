@@ -9,9 +9,13 @@
 #include <ostream>
 #include <functional>
 #include <random>
+#include <iostream>
 
 #include "Vector.h"
 #include "../util/Util.h"
+
+template<int N>
+class Vector;
 
 template<int ROWS, int COLS>
 class Matrix
@@ -71,8 +75,13 @@ public:
         return m_Matrix[index];
     }
 
+    const std::array<double,COLS> &operator[](int index) const
+    {
+        return m_Matrix[index];
+    }
+
     template<int C>
-    Matrix<ROWS, C> operator*(Matrix<COLS, C> &matrix) const
+    Matrix<ROWS, C> operator*(const Matrix<COLS, C> &matrix) const
     {
         Matrix<ROWS, C> result{};
 
@@ -92,15 +101,14 @@ public:
         return result;
     }
 
-    Vector<ROWS> operator*(Vector<COLS> &vector)
+    Vector<ROWS> operator*(const Vector<COLS> &vector) const
     {
         Vector<ROWS> result{};
-
         for (int i = 0; i < ROWS; ++i)
         {
             for (int j = 0; j < COLS; ++j)
             {
-                result[i] += vector[i] * m_Matrix[i][j];
+                result[i] += vector[j] * m_Matrix[i][j];
             }
         }
 
@@ -139,7 +147,7 @@ public:
         return *this;
     }
 
-    static Matrix<COLS, ROWS> transpose(Matrix<ROWS, COLS> &matrix)
+    Matrix<COLS, ROWS> transpose() const
     {
         Matrix<COLS, ROWS> result{};
 
@@ -147,14 +155,14 @@ public:
         {
             for (int j = 0; j < ROWS; ++j)
             {
-                result[i][j] = matrix[j][i];
+                result[i][j] = m_Matrix[j][i];
             }
         }
 
         return result;
     }
 
-    static Matrix<ROWS, COLS> getRandomMatrix(double rangeStart, double rangeEnd)
+    static Matrix<ROWS, COLS> getRandomMatrix(int numberOfInputUnits, int numberOfOutputUnits)
     {
         Matrix<ROWS, COLS> result{};
 
@@ -162,7 +170,9 @@ public:
         {
             for (int j = 0; j < COLS; ++j)
             {
-                result[i][j] = Util::getRandomNumber(rangeStart, rangeEnd);
+                result[i][j] = Util::getRandomNormalDistribution(0,
+                                            Util::getNormalXavierDeviation(numberOfInputUnits,
+                                                                           numberOfOutputUnits));
             }
         }
 

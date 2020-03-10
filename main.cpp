@@ -12,5 +12,8 @@ int main()
     Vector<INPUT> inputNodes({0.8, 0.2});
     network.feedForward(inputNodes);
 
+    Vector<OUTPUT> answer({1});
+    network.backPropagation(answer);
+
     return 0;
 }

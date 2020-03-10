@@ -11,9 +11,15 @@
 class Util
 {
 public:
-    static double getRandomNumber(double rangeStart, double rangeEnd);
+    static double getRandomUniformDistribution(double rangeStart, double rangeEnd);
+
+    static double getRandomNormalDistribution(double mean, double deviation);
+
+    static double getNormalXavierDeviation(int inputs, int outputs);
 
     static std::function<double(double)> getSigmoid();
+
+    static std::function<double(double)> getSigmoidDerivation();
 
     static std::function<double(double, double)> subtract();
 

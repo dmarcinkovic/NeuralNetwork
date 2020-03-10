@@ -9,6 +9,7 @@
 #include <ostream>
 #include <functional>
 #include "../util/Util.h"
+#include "Matrix.h"
 
 template<int N>
 class Vector
@@ -25,16 +26,6 @@ private:
         }
     }
 
-    static Vector<N> mapValues(Vector<N> &vector, const std::function<double(double)> &function)
-    {
-        for (int i = 0; i < N; ++i)
-        {
-            vector[i] = function(vector[i]);
-        }
-
-        return vector;
-    }
-
 public:
     explicit Vector(const std::array<double, N> &vector)
             : m_Vector(vector)
@@ -48,6 +39,11 @@ public:
         return m_Vector[index];
     }
 
+    const double operator[](int index) const
+    {
+        return m_Vector[index];
+    }
+
     Vector<N> operator+(const Vector<N> &vector) const
     {
         Vector<N> result{};
@@ -57,13 +53,69 @@ public:
         return result;
     }
 
+    Vector<N> operator-(const Vector<N> &vector) const
+    {
+        Vector<N> result{};
+
+        calculate(result, vector, Util::subtract());
+
+        return result;
+    }
+
+    Vector<N> operator*(const Vector<N> &vector) const
+    {
+        Vector<N> result{};
+
+        calculate(result, vector, Util::multiply());
+
+        return result;
+    }
+
+    template<int M>
+    Matrix<N, M> operator*(const Matrix<1, M> &matrix) const
+    {
+        Matrix<N, M> result{};
+
+        for (int i = 0; i < N; ++i)
+        {
+            for (int j = 0; j < M; ++j)
+            {
+                result[i][j] = m_Vector[i] * matrix[0][j];
+            }
+        }
+
+        return result;
+    }
+
+    Matrix<1, N> transpose() const
+    {
+        Matrix<1, N> matrix{};
+
+        for (int i = 0; i < N; ++i)
+        {
+            matrix[0][i] = m_Vector[i];
+        }
+
+        return matrix;
+    }
+
+    Vector<N> &operator*(double number)
+    {
+        for (int i = 0; i < N; ++i)
+        {
+            m_Vector[i] *= number;
+        }
+
+        return *this;
+    }
+
     static Vector<N> getRandomVector(double rangeStart, double rangeEnd)
     {
         Vector<N> result{};
 
         for (int i = 0; i < N; ++i)
         {
-            result[i] = Util::getRandomNumber(-1, 1);
+            result[i] = Util::getRandomUniformDistribution(-1, 1);
         }
 
         return result;
@@ -71,14 +123,21 @@ public:
 
     void map(const std::function<double(double)> &function)
     {
-        *this = mapValues(*this, function);
+        for (int i = 0; i < N; ++i)
+        {
+            m_Vector[i] = function(m_Vector[i]);
+        }
     }
 
-    static Vector<N> map(Vector<N> &vector, const std::function<double(double)> &function)
+    static Vector<N> map(const Vector<N> &vector, const std::function<double(double)> &function)
     {
         Vector<N> result{};
 
-        result = mapValues(vector, function);
+        for (int i = 0; i < N; ++i)
+        {
+            result[i] = function(vector.m_Vector[i]);
+        }
+
         return result;
     }
 
