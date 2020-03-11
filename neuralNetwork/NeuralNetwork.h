@@ -14,7 +14,7 @@ template<int INPUT, int HIDDEN, int OUTPUT>
 class NeuralNetwork
 {
 private:
-    constexpr static const double learningRate = 0.2;
+    constexpr static const double learningRate = 0.1;
 
     Matrix<HIDDEN, INPUT> m_InputHiddenWeights;
     Matrix<OUTPUT, HIDDEN> m_HiddenOutputWeights;
@@ -34,6 +34,8 @@ public:
 
         m_InputBias = Vector<HIDDEN>::getRandomVector(-1, 1);
         m_HiddenBias = Vector<OUTPUT>::getRandomVector(-1, 1);
+
+        std::cout << m_InputHiddenWeights << "\n";
     }
 
     void train(const Vector<INPUT> &inputNodes, const Vector<OUTPUT> &answer)
@@ -44,10 +46,14 @@ public:
 
     void guess(const Vector<INPUT> &input) const
     {
-        Vector<HIDDEN> hiddenNodes = (m_InputHiddenWeights * input + m_InputBias).map(Util::getSigmoid());
-        Vector<OUTPUT> output = (m_HiddenOutputWeights * hiddenNodes + m_HiddenBias).map(Util::getSigmoid());
+        std::cout << m_InputHiddenWeights << "\n";
 
-        std::cout << "Output\n";
+        Vector<HIDDEN> hiddenNodes = m_InputHiddenWeights * input + m_InputBias;
+        hiddenNodes.map(Util::getSigmoid());
+
+        Vector<OUTPUT> output = m_HiddenOutputWeights * hiddenNodes + m_HiddenBias;
+        output.map(Util::getSigmoid());
+
         std::cout << output << "\n";
     }
 
@@ -78,6 +84,8 @@ private:
                 hiddenError * learningRate * Vector<HIDDEN>::map(m_HiddenNodes, Util::getSigmoidDerivation());
 
         m_InputHiddenWeights += hiddenGradient * m_InputNodes.transpose();
+        auto delta = hiddenGradient * m_InputNodes.transpose();
+        std::cout << delta[0][0] << "\n";
         m_InputBias += hiddenGradient;
     }
 
