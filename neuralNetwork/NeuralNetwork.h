@@ -50,7 +50,6 @@ public:
     void backPropagation(const Vector<OUTPUT> &answer)
     {
         Vector<OUTPUT> outputError = calculateError(answer, m_OutputNodes);
-
         Vector<OUTPUT> outputNodesDerivation = Vector<OUTPUT>::map(m_OutputNodes, Util::getSigmoidDerivation());
         Matrix<OUTPUT, HIDDEN> deltaOutputHiddenWeights =
                 outputError * learningRate * outputNodesDerivation * m_HiddenNodes.transpose();

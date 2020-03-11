@@ -15,5 +15,8 @@ int main()
     Vector<OUTPUT> answer({1});
     network.backPropagation(answer);
 
+
+
+
     return 0;
 }
