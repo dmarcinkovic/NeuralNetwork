@@ -53,6 +53,13 @@ public:
         return result;
     }
 
+    Vector<N> &operator+=(const Vector<N> &vector)
+    {
+        calculate(*this, vector, Util::add());
+
+        return *this;
+    }
+
     Vector<N> operator-(const Vector<N> &vector) const
     {
         Vector<N> result{};

@@ -36,7 +36,15 @@ public:
         m_HiddenBias = Vector<OUTPUT>::getRandomVector(-1, 1);
     }
 
-    void feedForward(Vector<INPUT> &inputNodes)
+    void train(const Vector<INPUT> &inputNodes, const Vector<OUTPUT> &answer)
+    {
+        feedForward(inputNodes);
+        backPropagation(answer);
+    }
+
+private:
+
+    void feedForward(const Vector<INPUT> &inputNodes)
     {
         m_InputNodes = inputNodes;
 
@@ -63,8 +71,6 @@ public:
         m_InputHiddenWeights += hiddenGradient * m_InputNodes.transpose();
         m_InputBias += hiddenGradient;
     }
-
-private:
 
     template<int N>
     static Vector<N> calculateError(const Vector<N> &answer, const Vector<N> &guess)
