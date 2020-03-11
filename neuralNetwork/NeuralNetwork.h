@@ -42,6 +42,15 @@ public:
         backPropagation(answer);
     }
 
+    void guess(const Vector<INPUT> &input) const
+    {
+        Vector<HIDDEN> hiddenNodes = (m_InputHiddenWeights * input + m_InputBias).map(Util::getSigmoid());
+        Vector<OUTPUT> output = (m_HiddenOutputWeights * hiddenNodes + m_HiddenBias).map(Util::getSigmoid());
+
+        std::cout << "Output\n";
+        std::cout << output << "\n";
+    }
+
 private:
 
     void feedForward(const Vector<INPUT> &inputNodes)

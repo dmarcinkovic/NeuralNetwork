@@ -15,5 +15,6 @@ int main()
     network.train(inputNodes, answer);
 
 
+
     return 0;
 }
