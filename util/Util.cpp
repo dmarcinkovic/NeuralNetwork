@@ -32,7 +32,7 @@ std::function<double(double)> Util::getSigmoid()
 std::function<double(double)> Util::getSigmoidDerivation()
 {
     return [](double x) {
-        return getSigmoid()(x) * (1 - getSigmoid()(x));
+        return x * (1 - x);
     };
 }
 

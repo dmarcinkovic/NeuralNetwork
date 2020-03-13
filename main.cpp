@@ -20,15 +20,14 @@ int main()
                                           Vector<OUTPUT>{{1}},
                                           Vector<OUTPUT>{{0}}};
 
-    constexpr const int numberOfEpochs = 10000;
+    constexpr const int numberOfEpochs = 100000;
     for (int i = 0; i < numberOfEpochs; ++i)
     {
         int index = std::floor(Util::getRandomUniformDistribution(0, 4));
         network.train(inputs[index], outputs[index]);
     }
 
-    std::cout << "guessing output\n";
-    Vector<INPUT> input{{0, 0}};
+    Vector<INPUT> input{{0, 1}};
     network.guess(input);
 
     return 0;
