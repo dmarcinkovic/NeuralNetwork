@@ -31,8 +31,8 @@ std::function<double(double)> Util::getSigmoid()
 
 std::function<double(double)> Util::getSigmoidDerivation()
 {
-    return [](double x) {
-        return x * (1 - x);
+    return [](double y) {
+        return y * (1 - y);
     };
 }
 

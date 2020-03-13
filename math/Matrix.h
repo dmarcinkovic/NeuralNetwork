@@ -75,7 +75,7 @@ public:
         return m_Matrix[index];
     }
 
-    const std::array<double,COLS> &operator[](int index) const
+    const std::array<double, COLS> &operator[](int index) const
     {
         return m_Matrix[index];
     }
@@ -171,8 +171,8 @@ public:
             for (int j = 0; j < COLS; ++j)
             {
                 result[i][j] = Util::getRandomNormalDistribution(0,
-                                            Util::getNormalXavierDeviation(numberOfInputUnits,
-                                                                           numberOfOutputUnits));
+                                                                 Util::getNormalXavierDeviation(numberOfInputUnits,
+                                                                                                numberOfOutputUnits));
             }
         }
 

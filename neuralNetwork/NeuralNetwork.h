@@ -14,7 +14,7 @@ template<int INPUT, int HIDDEN, int OUTPUT>
 class NeuralNetwork
 {
 private:
-    constexpr static const double learningRate = 0.1;
+    constexpr static const double learningRate = 0.3;
 
     Matrix<HIDDEN, INPUT> m_InputHiddenWeights;
     Matrix<OUTPUT, HIDDEN> m_HiddenOutputWeights;
