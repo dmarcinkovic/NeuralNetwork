@@ -48,10 +48,6 @@ private:
     }
 
 public:
-    explicit Matrix(const std::array<std::array<double, COLS>, ROWS> &matrix)
-            : m_Matrix(matrix)
-    {}
-
     Matrix() = default;
 
     Matrix<ROWS, COLS> &operator*=(double number)
