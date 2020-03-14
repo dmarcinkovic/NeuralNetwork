@@ -4,7 +4,8 @@
 
 int main()
 {
-    Data::loadLabeledData("trainingData");
+    std::vector<Data> labeledData = Data::loadLabeledData("trainingData");
+
 
 
     return 0;

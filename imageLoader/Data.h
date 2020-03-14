@@ -6,6 +6,9 @@
 #define NEURALNETWORK_DATA_H
 
 #include <filesystem>
+#include <vector>
+#include <ostream>
+#include <string>
 
 #include "stb_image.h"
 #include "../math/Vector.h"
@@ -16,14 +19,14 @@ private:
     constexpr static const int SIZE = 28 * 28;
 
     Vector<SIZE> data;
-    const char* label;
+    std::string label;
 
-    static Vector<SIZE> loadImage(const char* filename);
+    static Vector<SIZE> loadImage(const char *filename);
 
 public:
+    Data(const Vector<SIZE> &data, std::string label);
 
-    static std::pair<Vector<SIZE>, const char*> loadLabeledData(const char* directory);
-
+    static std::vector<Data> loadLabeledData(const char *directoryName);
 };
 
 

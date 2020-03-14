@@ -4,8 +4,14 @@
 
 #include "Data.h"
 
+#include <utility>
 
 constexpr static const int SIZE = 28 * 28;
+
+Data::Data(const Vector<SIZE> &data, std::string label)
+        : data(data), label(std::move(label))
+{
+}
 
 Vector<SIZE> Data::loadImage(const char *filename)
 {
@@ -27,12 +33,23 @@ Vector<SIZE> Data::loadImage(const char *filename)
     return data;
 }
 
-std::pair<Vector<SIZE>, const char *> Data::loadLabeledData(const char* directory)
+std::vector<Data> Data::loadLabeledData(const char *directoryName)
 {
-    std::filesystem::directory_iterator directoryIterator(directory);
+    std::filesystem::directory_iterator directoryIterator(directoryName);
+    std::vector<Data> labeledData;
 
-    for (auto const& dir : directoryIterator)
+    for (auto const &directory : directoryIterator)
     {
-        std::cout << dir << "\n";
+        std::string label = directory.path().filename();
+        std::filesystem::directory_iterator files(directory.path().c_str());
+
+        for (auto const &file : files)
+        {
+            Vector<SIZE> image = loadImage(file.path().c_str());
+            labeledData.emplace_back(Data(image, label));
+        }
     }
+
+    return labeledData;
 }
+
