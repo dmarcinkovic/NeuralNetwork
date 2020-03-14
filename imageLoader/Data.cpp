@@ -50,6 +50,7 @@ std::vector<Data> Data::loadLabeledData(const char *directoryName)
         }
     }
 
+    std::shuffle(labeledData.begin(), labeledData.end(), labeledData.begin());
     return labeledData;
 }
 
