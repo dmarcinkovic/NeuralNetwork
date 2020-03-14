@@ -27,6 +27,10 @@ public:
     Data(const Vector<SIZE> &data, std::string label);
 
     static std::vector<Data> loadLabeledData(const char *directoryName);
+
+    [[nodiscard]] const Vector<SIZE> &getData() const;
+
+    [[nodiscard]] const std::string &getLabel() const;
 };
 
 

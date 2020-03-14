@@ -53,3 +53,13 @@ std::vector<Data> Data::loadLabeledData(const char *directoryName)
     return labeledData;
 }
 
+const Vector<SIZE> &Data::getData() const
+{
+    return data;
+}
+
+const std::string &Data::getLabel() const
+{
+    return label;
+}
+
