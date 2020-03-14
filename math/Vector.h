@@ -148,6 +148,16 @@ public:
         return result;
     }
 
+    auto begin()  const
+    {
+        return m_Vector.begin();
+    }
+
+    auto end() const
+    {
+        return m_Vector.end();
+    }
+
     friend std::ostream &operator<<(std::ostream &os, const Vector &vec)
     {
         for (auto const &element : vec.m_Vector)
