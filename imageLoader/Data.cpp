@@ -7,6 +7,7 @@
 #include <utility>
 
 constexpr static const int SIZE = 28 * 28;
+constexpr static const int N = 10;
 
 Data::Data(const Vector<SIZE> &data, std::string label)
         : data(data), label(std::move(label))
@@ -68,4 +69,14 @@ void Data::shuffleData(std::vector<Data> &data)
     unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
 
     std::shuffle(data.begin(), data.end(), std::default_random_engine(seed));
+}
+
+Vector<N> Data::getAnswerData(const std::string &label)
+{
+    int number = std::stoi(label);
+
+    Vector<N> answer{};
+
+    answer[number] = 1;
+    return answer;
 }

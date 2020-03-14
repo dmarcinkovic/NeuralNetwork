@@ -18,6 +18,7 @@ class Data
 {
 private:
     constexpr static const int SIZE = 28 * 28;
+    constexpr static const int N = 10;
 
     Vector<SIZE> data;
     std::string label;
@@ -34,6 +35,8 @@ public:
     [[nodiscard]] const std::string &getLabel() const;
 
     static void shuffleData(std::vector<Data> &data);
+
+    static Vector<N> getAnswerData(const std::string &label);
 };
 
 
