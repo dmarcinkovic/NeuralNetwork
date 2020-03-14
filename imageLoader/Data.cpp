@@ -50,7 +50,6 @@ std::vector<Data> Data::loadLabeledData(const char *directoryName)
         }
     }
 
-    std::shuffle(labeledData.begin(), labeledData.end(), labeledData.begin());
     return labeledData;
 }
 
@@ -64,3 +63,9 @@ const std::string &Data::getLabel() const
     return label;
 }
 
+void Data::shuffleData(std::vector<Data> &data)
+{
+    unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
+
+    std::shuffle(data.begin(), data.end(), std::default_random_engine(seed));
+}

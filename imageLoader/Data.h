@@ -7,8 +7,9 @@
 
 #include <filesystem>
 #include <vector>
-#include <ostream>
 #include <string>
+#include <chrono>
+#include <random>
 
 #include "stb_image.h"
 #include "../math/Vector.h"
@@ -31,6 +32,8 @@ public:
     [[nodiscard]] const Vector<SIZE> &getData() const;
 
     [[nodiscard]] const std::string &getLabel() const;
+
+    static void shuffleData(std::vector<Data> &data);
 };
 
 
