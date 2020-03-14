@@ -4,6 +4,7 @@
 
 #include "Data.h"
 
+
 constexpr static const int SIZE = 28 * 28;
 
 Vector<SIZE> Data::loadImage(const char *filename)
@@ -24,4 +25,14 @@ Vector<SIZE> Data::loadImage(const char *filename)
     }
 
     return data;
+}
+
+std::pair<Vector<SIZE>, const char *> Data::loadLabeledData(const char* directory)
+{
+    std::filesystem::directory_iterator directoryIterator(directory);
+
+    for (auto const& dir : directoryIterator)
+    {
+        std::cout << dir << "\n";
+    }
 }

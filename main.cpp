@@ -1,40 +1,10 @@
 
-#include "neuralNetwork/NeuralNetwork.h"
-#include <cmath>
-#include <chrono>
+#include "imageLoader/Data.h"
+
 
 int main()
 {
-    constexpr const int INPUT = 2;
-    constexpr const int HIDDEN = 4;
-    constexpr const int OUTPUT = 1;
-
-    NeuralNetwork<INPUT, HIDDEN, OUTPUT> network;
-
-    std::array<Vector<INPUT>, 4> inputs{Vector<INPUT>{{0, 0}},
-                                        Vector<INPUT>{{0, 1}},
-                                        Vector<INPUT>{{1, 0}},
-                                        Vector<INPUT>{{1, 1}}};
-
-    std::array<Vector<OUTPUT>, 4> outputs{Vector<OUTPUT>{{0}},
-                                          Vector<OUTPUT>{{1}},
-                                          Vector<OUTPUT>{{1}},
-                                          Vector<OUTPUT>{{0}}};
-
-    auto start = std::chrono::high_resolution_clock::now();
-
-    constexpr const int numberOfEpochs = 10000;
-    for (int i = 0; i < numberOfEpochs; ++i)
-    {
-        int index = std::floor(Util::getRandomUniformDistribution(0, 4));
-        network.train(inputs[index], outputs[index]);
-    }
-    auto end = std::chrono::high_resolution_clock::now();
-
-    std::cout << "Time: " << std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count() << '\n';
-
-    Vector<INPUT> input{{0, 1}};
-    network.guess(input);
+    Data::loadLabeledData("trainingData");
 
 
     return 0;
