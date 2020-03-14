@@ -50,7 +50,8 @@ public:
         Vector<OUTPUT> output = m_HiddenOutputWeights * hiddenNodes + m_HiddenBias;
         output.map(Util::getSigmoid());
 
-        std::cout << output << "\n";
+        auto maxNumber = std::max_element(output.begin(), output.end());
+        std::cout << maxNumber - output.begin() << "\n";
     }
 
 private:
