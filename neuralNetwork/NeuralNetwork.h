@@ -42,7 +42,7 @@ public:
         backPropagation(answer);
     }
 
-    void guess(const Vector<INPUT> &input) const
+    int guess(const Vector<INPUT> &input) const
     {
         Vector<HIDDEN> hiddenNodes = m_InputHiddenWeights * input + m_InputBias;
         hiddenNodes.map(Util::getSigmoid());
@@ -51,7 +51,7 @@ public:
         output.map(Util::getSigmoid());
 
         auto maxNumber = std::max_element(output.begin(), output.end());
-        std::cout << maxNumber - output.begin() << "\n";
+        return maxNumber - output.begin();
     }
 
 private:
