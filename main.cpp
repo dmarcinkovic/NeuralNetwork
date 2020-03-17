@@ -26,20 +26,17 @@ int main()
     std::cout << "Time took: " << std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count() << " ms\n";
 
     int correct = 0;
-    int totalNumberOfTests = 0;
-    for (int i = 0; i < 20000; ++i)
+    for (auto & i : testData)
     {
-        int guess = network.guess(input[i].getData());
+        int guess = network.guess(i.getData());
 
-        if (guess == std::stoi(input[i].getLabel()))
+        if (guess == std::stoi(i.getLabel()))
         {
             ++correct;
         }
-
-        ++totalNumberOfTests;
     }
 
-    std::cout << "Correct: " << static_cast<double>(correct) / totalNumberOfTests * 100 << "%\n";
+    std::cout << "Correct: " << static_cast<double>(correct) / testData.size() * 100 << "%\n";
 
     return 0;
 }
