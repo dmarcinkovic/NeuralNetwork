@@ -16,17 +16,20 @@ int main()
 
     std::cout << "Done preparing data\n";
 
-    auto start = std::chrono::high_resolution_clock::now();
-    for (auto &i : input)
+    for (int j = 0; j < 20; ++j)
     {
-        network.train(i.getData(), Data::getAnswerData(i.getLabel()));
+        auto start = std::chrono::high_resolution_clock::now();
+        for (auto &i : input)
+        {
+            network.train(i.getData(), Data::getAnswerData(i.getLabel()));
+        }
+        auto end = std::chrono::high_resolution_clock::now();
+        std::cout << "Time took: " << std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count()
+                  << " ms\n";
     }
 
-    auto end = std::chrono::high_resolution_clock::now();
-    std::cout << "Time took: " << std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count() << " ms\n";
-
     int correct = 0;
-    for (auto & i : testData)
+    for (auto &i : testData)
     {
         int guess = network.guess(i.getData());
 
