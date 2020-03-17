@@ -25,6 +25,8 @@ private:
 
     static Vector<SIZE> loadImage(const char *filename);
 
+    static void shuffleData(std::vector<Data> &data);
+
 public:
     Data(const Vector<SIZE> &data, std::string label);
 
@@ -33,8 +35,6 @@ public:
     [[nodiscard]] const Vector<SIZE> &getData() const;
 
     [[nodiscard]] const std::string &getLabel() const;
-
-    static void shuffleData(std::vector<Data> &data);
 
     static Vector<N> getAnswerData(const std::string &label);
 };

@@ -10,7 +10,7 @@ int main()
     constexpr const int OUTPUT = 10;
 
     std::vector<Data> input = Data::loadLabeledData("trainingData");
-    Data::shuffleData(input);
+    std::vector<Data> testData = Data::loadLabeledData("testData");
 
     NeuralNetwork<INPUT, HIDDEN, OUTPUT> network;
 
