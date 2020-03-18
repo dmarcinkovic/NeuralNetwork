@@ -16,6 +16,7 @@ int main()
 
     std::cout << "Done preparing data\n";
 
+    double totalDuration = 0;
     for (int j = 0; j < 20; ++j)
     {
         auto start = std::chrono::high_resolution_clock::now();
@@ -24,9 +25,12 @@ int main()
             network.train(i.getData(), Data::getAnswerData(i.getLabel()));
         }
         auto end = std::chrono::high_resolution_clock::now();
-        std::cout << "Time took: " << std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count()
-                  << " ms\n";
+        double duration =  std::chrono::duration_cast<std::chrono::seconds>(end - start).count();
+        std::cout << "Time took: " << duration << " s\n";
+
+        totalDuration += duration;
     }
+    std::cout << "Total time: " << totalDuration << "s\n";
 
     int correct = 0;
     for (auto &i : testData)

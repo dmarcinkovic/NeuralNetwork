@@ -38,9 +38,9 @@ private:
     void calculate(Matrix<ROWS, COLS> &result, double number,
                    const std::function<double(double, double)> &binaryOperation) const
     {
-        for (int i = 0; i < m_Matrix.size(); ++i)
+        for (int i = 0; i < ROWS; ++i)
         {
-            for (int j = 0; j < m_Matrix[0].size(); ++j)
+            for (int j = 0; j < COLS; ++j)
             {
                 result[i][j] = m_Matrix[i][j] * number;
             }

@@ -27,10 +27,6 @@ private:
     }
 
 public:
-    explicit Vector(const std::array<double, N> &vector)
-            : m_Vector(vector)
-    {
-    }
 
     Vector() = default;
 
