@@ -23,11 +23,11 @@ private:
     Vector<SIZE> data;
     std::string label;
 
-    static Vector<SIZE> loadImage(const char *filename);
-
     static void shuffleData(std::vector<Data> &data);
 
 public:
+    static Vector<SIZE> loadImage(const char *filename);
+
     Data(const Vector<SIZE> &data, std::string label);
 
     static std::vector<Data> loadLabeledData(const char *directoryName);
