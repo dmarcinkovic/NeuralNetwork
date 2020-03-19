@@ -13,7 +13,7 @@ int main()
     network.loadTrainedModel("trainedModel.txt");
 
 //    Vector<INPUT> image = Data::loadImage("testData/0/img_2.jpg");
-    Vector<INPUT> image = Data::loadImage("/home/david/sketchbook/Paint/image.jpg");
+    Vector<INPUT> image = Data::loadImage("/home/david/sketchbook/Paint/image.png");
 
     int result = network.guess(image);
 
