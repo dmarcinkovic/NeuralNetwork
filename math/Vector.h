@@ -8,6 +8,8 @@
 #include <array>
 #include <ostream>
 #include <functional>
+#include <fstream>
+
 #include "../util/Util.h"
 #include "Matrix.h"
 
@@ -27,6 +29,11 @@ private:
     }
 
 public:
+    Vector(const std::array<double, N> &vector)
+            : m_Vector(vector)
+    {
+
+    }
 
     Vector() = default;
 
@@ -144,7 +151,20 @@ public:
         return result;
     }
 
-    auto begin()  const
+    static Vector<N> loadVector(std::ifstream &reader)
+    {
+        Vector<N> vector{};
+
+        std::string line;
+        std::getline(reader, line);
+        std::array<double, N> array = Util::loadArray<N>(line);
+
+        vector = Vector(array);
+
+        return vector;
+    }
+
+    auto begin() const
     {
         return m_Vector.begin();
     }

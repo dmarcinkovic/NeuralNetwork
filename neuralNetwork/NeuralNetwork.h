@@ -9,6 +9,7 @@
 #include "../math/Matrix.h"
 
 #include <iostream>
+#include <fstream>
 
 template<int INPUT, int HIDDEN, int OUTPUT>
 class NeuralNetwork
@@ -52,6 +53,30 @@ public:
 
         auto maxNumber = std::max_element(output.begin(), output.end());
         return maxNumber - output.begin();
+    }
+
+    void saveTrainedModel(const char *filename) const
+    {
+        std::ofstream writer(filename);
+
+        writer << m_InputHiddenWeights << m_HiddenOutputWeights
+               << m_InputBias << m_HiddenBias << m_HiddenNodes;
+
+        writer.close();
+    }
+
+    void loadTrainedModel(const char *filename)
+    {
+        std::ifstream reader(filename);
+
+        m_InputHiddenWeights = Matrix<HIDDEN, INPUT>::loadMatrix(reader);
+        m_HiddenOutputWeights = Matrix<OUTPUT, HIDDEN>::loadMatrix(reader);
+
+        m_InputBias = Vector<HIDDEN>::loadVector(reader);
+        m_HiddenBias = Vector<OUTPUT>::loadVector(reader);
+        m_HiddenNodes = Vector<HIDDEN>::loadVector(reader);
+
+        reader.close();
     }
 
 private:

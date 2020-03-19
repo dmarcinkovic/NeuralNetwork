@@ -10,6 +10,7 @@
 #include <functional>
 #include <random>
 #include <iostream>
+#include <fstream>
 
 #include "Vector.h"
 #include "../util/Util.h"
@@ -173,6 +174,21 @@ public:
         }
 
         return result;
+    }
+
+    static Matrix<ROWS, COLS> loadMatrix(std::ifstream &reader)
+    {
+        Matrix<ROWS, COLS> matrix{};
+
+        std::string line;
+        for (int i = 0; i < ROWS; ++i)
+        {
+            std::getline(reader, line);
+            std::array<double, COLS> array = Util::loadArray<COLS>(line);
+            matrix[i] = array;
+        }
+
+        return matrix;
     }
 
     friend std::ostream &operator<<(std::ostream &os, const Matrix &matrix)
