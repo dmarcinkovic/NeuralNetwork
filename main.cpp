@@ -1,7 +1,6 @@
 
 #include "imageLoader/Data.h"
 #include "neuralNetwork/NeuralNetwork.h"
-#include "train/Train.h"
 
 int main()
 {
@@ -11,19 +10,14 @@ int main()
 
     NeuralNetwork<INPUT, HIDDEN, OUTPUT> network;
 
-//    network.loadTrainedModel("trainedModel.txt");
-//
+    network.loadTrainedModel("trainedModel.txt");
+
 //    Vector<INPUT> image = Data::loadImage("testData/0/img_2.jpg");
-//    Vector<INPUT> image = Data::loadImage("/home/david/sketchbook/Paint/image.png");
-//
-//    int result = network.guess(image);
-//
-//    std::cout << "Prediction: " << result << "\n";
+    Vector<INPUT> image = Data::loadImage("/home/david/sketchbook/Paint/image.png");
 
-    Train::train("trainingData",network);
-    network.saveTrainedModel("trainedModel.txt");
+    int result = network.guess(image);
 
-    Train::test("testData", network);
+    std::cout << "Prediction: " << result << "\n";
 
     return 0;
 }
