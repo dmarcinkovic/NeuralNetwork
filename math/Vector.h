@@ -51,14 +51,14 @@ public:
     {
         Vector<N> result{};
 
-        calculate(result, vector, Util::add());
+        calculate(result, vector, std::plus<double>());
 
         return result;
     }
 
     Vector<N> &operator+=(const Vector<N> &vector)
     {
-        calculate(*this, vector, Util::add());
+        calculate(*this, vector, std::plus<double>());
 
         return *this;
     }
@@ -67,7 +67,7 @@ public:
     {
         Vector<N> result{};
 
-        calculate(result, vector, Util::subtract());
+        calculate(result, vector, std::minus<double>());
 
         return result;
     }
@@ -76,7 +76,7 @@ public:
     {
         Vector<N> result{};
 
-        calculate(result, vector, Util::multiply());
+        calculate(result, vector, std::multiplies<double>());
 
         return result;
     }

@@ -36,27 +36,6 @@ std::function<double(double)> Util::getSigmoidDerivation()
     };
 }
 
-std::function<double(double, double)> Util::subtract()
-{
-    return [](double a, double b) {
-        return a - b;
-    };
-}
-
-std::function<double(double, double)> Util::add()
-{
-    return [](double a, double b) {
-        return a + b;
-    };
-}
-
-std::function<double(double, double)> Util::multiply()
-{
-    return [](double a, double b) {
-        return a * b;
-    };
-}
-
 double Util::getNormalXavierDeviation(int inputs, int outputs)
 {
     return std::sqrt(2. / (inputs + outputs));

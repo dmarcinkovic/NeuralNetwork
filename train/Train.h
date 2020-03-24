@@ -19,7 +19,7 @@ public:
     {
         std::vector<Data> trainData = Data::loadLabeledData(directoryName);
 
-        constexpr static const int numberOfEpochs = 10;
+        constexpr static const int numberOfEpochs = 50;
 
         double totalDuration = 0;
         for (int j = 0; j < numberOfEpochs; ++j)

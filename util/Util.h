@@ -21,12 +21,6 @@ public:
 
     static std::function<double(double)> getSigmoidDerivation();
 
-    static std::function<double(double, double)> subtract();
-
-    static std::function<double(double, double)> add();
-
-    static std::function<double(double, double)> multiply();
-
     template<int N>
     static std::array<double, N> loadArray(std::string_view line)
     {

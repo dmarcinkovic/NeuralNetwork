@@ -53,7 +53,7 @@ public:
 
     Matrix<ROWS, COLS> &operator*=(double number)
     {
-        calculate(*this, number, Util::multiply());
+        calculate(*this, number, std::multiplies<double>());
 
         return *this;
     }
@@ -62,7 +62,7 @@ public:
     {
         Matrix<ROWS, COLS> result{};
 
-        calculate(result, number, Util::multiply());
+        calculate(result, number, std::multiplies<double>());
 
         return result;
     }
@@ -116,14 +116,14 @@ public:
     {
         Matrix<ROWS, COLS> result;
 
-        calculate(result, matrix, Util::add());
+        calculate(result, matrix, std::plus<double>());
 
         return result;
     }
 
     Matrix<ROWS, COLS> &operator+=(const Matrix<ROWS, COLS> &matrix)
     {
-        calculate(*this, matrix, Util::add());
+        calculate(*this, matrix, std::plus<double>());
 
         return *this;
     }
@@ -132,14 +132,14 @@ public:
     {
         Matrix<ROWS, COLS> result;
 
-        calculate(result, matrix, Util::subtract());
+        calculate(result, matrix, std::minus<double>());
 
         return result;
     }
 
     Matrix<ROWS, COLS> &operator-=(const Matrix<ROWS, COLS> &matrix)
     {
-        calculate(*this, matrix, Util::subtract());
+        calculate(*this, matrix, std::minus<double>());
 
         return *this;
     }
