@@ -29,11 +29,6 @@ private:
     }
 
 public:
-    Vector(const std::array<double, N> &vector)
-            : m_Vector(vector)
-    {
-
-    }
 
     Vector() = default;
 
@@ -151,19 +146,6 @@ public:
         return result;
     }
 
-    static Vector<N> loadVector(std::ifstream &reader)
-    {
-        Vector<N> vector{};
-
-        std::string line;
-        std::getline(reader, line);
-        std::array<double, N> array = Util::loadArray<N>(line);
-
-        vector = Vector(array);
-
-        return vector;
-    }
-
     auto begin() const
     {
         return m_Vector.begin();
@@ -172,6 +154,16 @@ public:
     auto end() const
     {
         return m_Vector.end();
+    }
+
+    friend std::istream &operator>>(std::istream &is, Vector &vec)
+    {
+        for (int i = 0; i < N; ++i)
+        {
+            is >> vec.m_Vector[i];
+        }
+
+        return is;
     }
 
     friend std::ostream &operator<<(std::ostream &os, const Vector &vec)

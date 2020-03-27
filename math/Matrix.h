@@ -176,19 +176,17 @@ public:
         return result;
     }
 
-    static Matrix<ROWS, COLS> loadMatrix(std::ifstream &reader)
+    friend std::istream &operator>>(std::istream &is, Matrix &matrix)
     {
-        Matrix<ROWS, COLS> matrix{};
-
-        std::string line;
         for (int i = 0; i < ROWS; ++i)
         {
-            std::getline(reader, line);
-            std::array<double, COLS> array = Util::loadArray<COLS>(line);
-            matrix[i] = array;
+            for (int j = 0; j < COLS; ++j)
+            {
+                is >> matrix.m_Matrix[i][j];
+            }
         }
 
-        return matrix;
+        return is;
     }
 
     friend std::ostream &operator<<(std::ostream &os, const Matrix &matrix)

@@ -69,12 +69,8 @@ public:
     {
         std::ifstream reader(filename);
 
-        m_InputHiddenWeights = Matrix<HIDDEN, INPUT>::loadMatrix(reader);
-        m_HiddenOutputWeights = Matrix<OUTPUT, HIDDEN>::loadMatrix(reader);
-
-        m_InputBias = Vector<HIDDEN>::loadVector(reader);
-        m_HiddenBias = Vector<OUTPUT>::loadVector(reader);
-        m_HiddenNodes = Vector<HIDDEN>::loadVector(reader);
+        reader >> m_InputHiddenWeights >> m_HiddenOutputWeights
+               >> m_InputBias >> m_HiddenBias >> m_HiddenNodes;
 
         reader.close();
     }
