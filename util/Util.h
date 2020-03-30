@@ -20,6 +20,23 @@ public:
     static std::function<double(double)> getSigmoid();
 
     static std::function<double(double)> getSigmoidDerivation();
+
+    template<int N>
+    static std::array<double, N> loadArray(std::string_view line)
+    {
+        std::array<double, N> result;
+
+        for (int i = 0; i < N; ++i)
+        {
+            size_t position = line.find(' ');
+            std::string number(line.substr(0, position));
+
+            result[i] = std::stod(number);
+            line = line.substr(position + 1);
+        }
+
+        return result;
+    }
 };
 
 
