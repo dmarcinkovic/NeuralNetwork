@@ -11,11 +11,14 @@ int main()
     constexpr const int HIDDEN = 128;
     constexpr const int OUTPUT = 10;
 
-    NeuralNetwork<INPUT, HIDDEN, OUTPUT> network({"0", "1", "2", "3", "4", "5", "6", "7", "8", "9"});
+    NeuralNetwork<INPUT, HIDDEN, OUTPUT> network;
 
     network.loadTrainedModel("trainedModel.txt");
 
-    Train::predict("/home/david/sketchbook/Paint/image.png", network, IMAGE_WIDTH, IMAGE_HEIGHT);
+    std::vector<std::string> labels{"0", "1", "2", "3", "4", "5", "6", "7", "8", "9"};
+
+    Train train(labels, IMAGE_WIDTH, IMAGE_HEIGHT);
+    train.predict("/home/david/sketchbook/Paint/image.png", network);
 
     return 0;
 }

@@ -7,21 +7,37 @@
 
 #include <vector>
 #include <chrono>
+#include <unordered_map>
 
 #include "../imageLoader/Data.h"
 #include "../neuralNetwork/NeuralNetwork.h"
 
 class Train
 {
-public:
-    template<int INPUT, int HIDDEN, int OUTPUT>
-    static void train(const char *directoryName, NeuralNetwork<INPUT, HIDDEN, OUTPUT> &network,
-                      int desiredImageWidth, int desiredImageHeight)
-    {
-        std::vector<Data<INPUT>> trainData = Data<INPUT>::loadLabeledData(directoryName, desiredImageWidth,
-                                                                          desiredImageHeight);
+private:
+    std::unordered_map<std::string, int> m_Labels;
+    std::vector<std::string> m_NameOfLabels;
 
-        constexpr static const int numberOfEpochs = 50;
+    const int imageWidth;
+    const int imageHeight;
+
+public:
+    Train(const std::vector<std::string> &labels, int imageWidth, int imageHeight)
+            : m_NameOfLabels(labels), imageWidth(imageWidth), imageHeight(imageHeight)
+    {
+        int counter = 0;
+        for (auto const &label : labels)
+        {
+            m_Labels[label] = counter++;
+        }
+    }
+
+    template<int INPUT, int HIDDEN, int OUTPUT>
+    void train(const char *directoryName, NeuralNetwork<INPUT, HIDDEN, OUTPUT> &network)
+    {
+        std::vector<Data<INPUT>> trainData = Data<INPUT>::loadLabeledData(directoryName, imageWidth, imageHeight);
+
+        constexpr static const int numberOfEpochs = 1;
 
         double totalDuration = 0;
         for (int j = 0; j < numberOfEpochs; ++j)
@@ -30,7 +46,7 @@ public:
             for (auto &i : trainData)
             {
                 Vector<OUTPUT> data{};
-                data[network.getLabel(i.getLabel())] = 1;
+                data[m_Labels[i.getLabel()]] = 1;
 
                 network.train(i.getData(), data);
             }
@@ -45,16 +61,15 @@ public:
     }
 
     template<int INPUT, int HIDDEN, int OUTPUT>
-    static void test(const char *directoryName, const NeuralNetwork<INPUT, HIDDEN, OUTPUT> &network,
-                     int desiredImageWidth, int desiredImageHeight)
+    void test(const char *directoryName, const NeuralNetwork<INPUT, HIDDEN, OUTPUT> &network)
     {
-        std::vector<Data<INPUT>> testData = Data<INPUT>::loadLabeledData(directoryName, desiredImageWidth,
-                                                                         desiredImageHeight);
+        std::vector<Data<INPUT>> testData = Data<INPUT>::loadLabeledData(directoryName, imageWidth, imageHeight);
 
         int correct = 0;
         for (auto &i : testData)
         {
-            if (network.guess(i.getData()) == i.getLabel())
+            int guess = network.guess(i.getData());
+            if (guess == m_Labels[i.getLabel()])
             {
                 ++correct;
             }
@@ -64,15 +79,14 @@ public:
     }
 
     template<int INPUT, int HIDDEN, int OUTPUT>
-    static void predict(const char *path, const NeuralNetwork<INPUT, HIDDEN, OUTPUT> &network,
-                        int desiredImageWidth, int desiredImageHeight)
+    void predict(const char *path, const NeuralNetwork<INPUT, HIDDEN, OUTPUT> &network)
     {
         if (std::filesystem::is_directory(path))
         {
-            predictImagesFromDirectory(path, network, desiredImageWidth, desiredImageHeight);
+            predictImagesFromDirectory(path, network, imageWidth, imageHeight);
         } else
         {
-            predictImage(path, network, desiredImageWidth, desiredImageHeight);
+            predictImage(path, network, imageWidth, imageHeight);
         }
     }
 

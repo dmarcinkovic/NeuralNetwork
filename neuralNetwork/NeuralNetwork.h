@@ -10,17 +10,12 @@
 
 #include <iostream>
 #include <fstream>
-#include <unordered_map>
-#include <string>
 
 template<int INPUT, int HIDDEN, int OUTPUT>
 class NeuralNetwork
 {
 private:
     constexpr static const double learningRate = 0.3;
-
-    std::unordered_map<std::string, int> m_Labels;
-    std::vector<std::string> m_NameOfLabels;
 
     Matrix<HIDDEN, INPUT> m_InputHiddenWeights;
     Matrix<OUTPUT, HIDDEN> m_HiddenOutputWeights;
@@ -33,16 +28,8 @@ private:
     Vector<OUTPUT> m_OutputNodes;
 
 public:
-    NeuralNetwork(const std::initializer_list<std::string> &labels)
-            : m_NameOfLabels(labels.size())
+    NeuralNetwork()
     {
-        int counter = 0;
-        for (auto const &label : labels)
-        {
-            m_NameOfLabels[counter] = label;
-            m_Labels[label] = counter++;
-        }
-
         m_InputHiddenWeights = Matrix<HIDDEN, INPUT>::getRandomMatrix(INPUT, HIDDEN);
         m_HiddenOutputWeights = Matrix<OUTPUT, HIDDEN>::getRandomMatrix(HIDDEN, OUTPUT);
 
@@ -56,7 +43,7 @@ public:
         backPropagation(answer);
     }
 
-    const std::string &guess(const Vector<INPUT> &input) const
+    int guess(const Vector<INPUT> &input) const
     {
         Vector<HIDDEN> hiddenNodes = m_InputHiddenWeights * input + m_InputBias;
         hiddenNodes.map(Util::getSigmoid());
@@ -65,7 +52,7 @@ public:
         output.map(Util::getSigmoid());
 
         auto maxNumber = std::max_element(output.begin(), output.end());
-        return m_NameOfLabels[maxNumber - output.begin()];
+        return maxNumber - output.begin();
     }
 
     void saveTrainedModel(const char *filename) const
@@ -86,11 +73,6 @@ public:
                >> m_InputBias >> m_HiddenBias >> m_HiddenNodes;
 
         reader.close();
-    }
-
-    int getLabel(const std::string &label) const
-    {
-        return m_Labels.at(label);
     }
 
 private:
