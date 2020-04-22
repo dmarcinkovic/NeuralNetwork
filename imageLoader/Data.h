@@ -18,8 +18,8 @@ template<int SIZE>
 class Data
 {
 private:
-    Vector<SIZE> data;
-    std::string label;
+    Vector<SIZE> m_Data;
+    std::string m_Label;
 
     static void shuffleData(std::vector<Data> &data)
     {
@@ -30,7 +30,7 @@ private:
 
 public:
     Data(Vector<SIZE> data, std::string label)
-            : data(std::move(data)), label(std::move(label))
+            : m_Data(std::move(data)), m_Label(std::move(label))
     {}
 
     static Vector<SIZE> loadImage(const char *filename)
@@ -83,12 +83,12 @@ public:
 
     [[nodiscard]] const Vector<SIZE> &getData() const
     {
-        return data;
+        return m_Data;
     }
 
     [[nodiscard]] const std::string &getLabel() const
     {
-        return label;
+        return m_Label;
     }
 
     template<int N>
