@@ -17,7 +17,7 @@ public:
     template<int INPUT, int HIDDEN, int OUTPUT>
     static void train(const char *directoryName, NeuralNetwork<INPUT, HIDDEN, OUTPUT> &network)
     {
-        std::vector<Data> trainData = Data::loadLabeledData(directoryName);
+        std::vector<Data<INPUT>> trainData = Data<INPUT>::loadLabeledData(directoryName);
 
         constexpr static const int numberOfEpochs = 50;
 
@@ -27,7 +27,7 @@ public:
             auto start = std::chrono::high_resolution_clock::now();
             for (auto &i : trainData)
             {
-                network.train(i.getData(), Data::getAnswerData(i.getLabel()));
+                network.train(i.getData(), Data<OUTPUT>::getAnswerData(i.getLabel()));
             }
             auto end = std::chrono::high_resolution_clock::now();
             totalDuration += std::chrono::duration_cast<std::chrono::seconds>(end - start).count();
@@ -41,7 +41,7 @@ public:
     template<int INPUT, int HIDDEN, int OUTPUT>
     static void test(const char *directoryName, const NeuralNetwork<INPUT, HIDDEN, OUTPUT> &network)
     {
-        std::vector<Data> testData = Data::loadLabeledData(directoryName);
+        std::vector<Data<INPUT>> testData = Data<INPUT>::loadLabeledData(directoryName);
 
         int correct = 0;
         for (auto &i : testData)
@@ -73,7 +73,7 @@ private:
     template<int INPUT, int HIDDEN, int OUTPUT>
     static void predictImage(const char *imagePath, const NeuralNetwork<INPUT, HIDDEN, OUTPUT> &network)
     {
-        Vector<INPUT> image = Data::loadImage(imagePath);
+        Vector<INPUT> image = Data<INPUT>::loadImage(imagePath);
 
         int result = network.guess(image);
         std::cout << "Prediction: " << result << "\n";
@@ -82,7 +82,7 @@ private:
     template<int INPUT, int HIDDEN, int OUTPUT>
     static void predictImagesFromDirectory(const char *directory, const NeuralNetwork<INPUT, HIDDEN, OUTPUT> &network)
     {
-        auto images = Data::loadImagesFromDirectory(directory);
+        auto images = Data<INPUT>::loadImagesFromDirectory(directory);
 
         for (auto const&[image, imagePath] : images)
         {
