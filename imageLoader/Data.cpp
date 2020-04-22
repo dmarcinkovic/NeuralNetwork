@@ -9,8 +9,8 @@
 constexpr static const int SIZE = 28 * 28;
 constexpr static const int N = 10;
 
-Data::Data(const Vector<SIZE> &data, std::string label)
-        : data(data), label(std::move(label))
+Data::Data(Vector<SIZE> data, std::string label)
+        : data(std::move(data)), label(std::move(label))
 {
 }
 
@@ -21,6 +21,11 @@ Vector<SIZE> Data::loadImage(const char *filename)
     int width, height, BPP;
     std::uint8_t *localBuffer = stbi_load(filename, &width, &height, &BPP, 3);
 
+    if (localBuffer == nullptr)
+    {
+        throw std::invalid_argument("Cannot load image " + std::string(filename));
+    }
+
     for (int i = 0; i < height; ++i)
     {
         for (int j = 0; j < width; ++j)
@@ -30,6 +35,8 @@ Vector<SIZE> Data::loadImage(const char *filename)
             data[index] = color / 255.0;
         }
     }
+
+    stbi_image_free(localBuffer);
 
     return data;
 }
@@ -80,4 +87,18 @@ Vector<N> Data::getAnswerData(const std::string &label)
 
     answer[number] = 1;
     return answer;
+}
+
+std::vector<std::pair<Vector<SIZE>, std::string>> Data::loadImagesFromDirectory(const char *directory)
+{
+    std::vector<std::pair<Vector<SIZE>, std::string>> result;
+
+    std::filesystem::directory_iterator directoryIterator(directory);
+
+    for (auto const& image : directoryIterator)
+    {
+        result.emplace_back(loadImage(image.path().c_str()), image.path().filename());
+    }
+
+    return result;
 }

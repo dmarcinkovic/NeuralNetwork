@@ -56,6 +56,41 @@ public:
 
         std::cout << "Correct: " << static_cast<double>(correct) / testData.size() * 100 << "%\n";
     }
+
+    template<int INPUT, int HIDDEN, int OUTPUT>
+    static void predict(const char *path, const NeuralNetwork<INPUT, HIDDEN, OUTPUT> &network)
+    {
+        if (std::filesystem::is_directory(path))
+        {
+            predictImagesFromDirectory(path, network);
+        } else
+        {
+            predictImage(path, network);
+        }
+    }
+
+private:
+    template<int INPUT, int HIDDEN, int OUTPUT>
+    static void predictImage(const char *imagePath, const NeuralNetwork<INPUT, HIDDEN, OUTPUT> &network)
+    {
+        Vector<INPUT> image = Data::loadImage(imagePath);
+
+        int result = network.guess(image);
+        std::cout << "Prediction: " << result << "\n";
+    }
+
+    template<int INPUT, int HIDDEN, int OUTPUT>
+    static void predictImagesFromDirectory(const char *directory, const NeuralNetwork<INPUT, HIDDEN, OUTPUT> &network)
+    {
+        auto images = Data::loadImagesFromDirectory(directory);
+
+        for (auto const&[image, imagePath] : images)
+        {
+            int guess = network.guess(image);
+
+            std::cout << "Image " << imagePath << " represents " << guess << '\n';
+        }
+    }
 };
 
 

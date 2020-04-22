@@ -28,7 +28,7 @@ private:
 public:
     static Vector<SIZE> loadImage(const char *filename);
 
-    Data(const Vector<SIZE> &data, std::string label);
+    Data(Vector<SIZE> data, std::string label);
 
     static std::vector<Data> loadLabeledData(const char *directoryName);
 
@@ -37,6 +37,8 @@ public:
     [[nodiscard]] const std::string &getLabel() const;
 
     static Vector<N> getAnswerData(const std::string &label);
+
+    static std::vector<std::pair<Vector<SIZE>, std::string>> loadImagesFromDirectory(const char *directory);
 };
 
 

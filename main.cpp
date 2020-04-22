@@ -1,6 +1,7 @@
 
 #include "imageLoader/Data.h"
 #include "neuralNetwork/NeuralNetwork.h"
+#include "train/Train.h"
 
 int main()
 {
@@ -12,12 +13,7 @@ int main()
 
     network.loadTrainedModel("trainedModel.txt");
 
-//    Vector<INPUT> image = Data::loadImage("testData/0/img_2.jpg");
-    Vector<INPUT> image = Data::loadImage("/home/david/sketchbook/Paint/image.png");
-
-    int result = network.guess(image);
-
-    std::cout << "Prediction: " << result << "\n";
+    Train::predict("/home/david/sketchbook/Paint/image.png", network);
 
     return 0;
 }
