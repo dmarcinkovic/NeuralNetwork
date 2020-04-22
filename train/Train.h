@@ -83,35 +83,33 @@ public:
     {
         if (std::filesystem::is_directory(path))
         {
-            predictImagesFromDirectory(path, network, imageWidth, imageHeight);
+            predictImagesFromDirectory(path, network);
         } else
         {
-            predictImage(path, network, imageWidth, imageHeight);
+            predictImage(path, network);
         }
     }
 
 private:
     template<int INPUT, int HIDDEN, int OUTPUT>
-    static void predictImage(const char *imagePath, const NeuralNetwork<INPUT, HIDDEN, OUTPUT> &network,
-                             int width, int height)
+    void predictImage(const char *imagePath, const NeuralNetwork<INPUT, HIDDEN, OUTPUT> &network)
     {
-        Vector<INPUT> image = Data<INPUT>::loadImage(imagePath, width, height);
+        Vector<INPUT> image = Data<INPUT>::loadImage(imagePath, imageWidth, imageHeight);
 
-        auto const &result = network.guess(image);
-        std::cout << "Prediction: " << result << "\n";
+        int guess = network.guess(image);
+        std::cout << "Prediction: " << m_NameOfLabels[guess] << "\n";
     }
 
     template<int INPUT, int HIDDEN, int OUTPUT>
-    static void predictImagesFromDirectory(const char *directory, const NeuralNetwork<INPUT, HIDDEN, OUTPUT> &network,
-                                           int width, int height)
+    void predictImagesFromDirectory(const char *directory, const NeuralNetwork<INPUT, HIDDEN, OUTPUT> &network)
     {
-        auto images = Data<INPUT>::loadImagesFromDirectory(directory, width, height);
+        auto images = Data<INPUT>::loadImagesFromDirectory(directory, imageWidth, imageHeight);
 
         for (auto const&[image, imagePath] : images)
         {
-            auto const &guess = network.guess(image);
+            int guess = network.guess(image);
 
-            std::cout << "Image " << imagePath << " represents " << guess << '\n';
+            std::cout << "Image " << imagePath << " represents " << m_NameOfLabels[guess] << '\n';
         }
     }
 };
