@@ -15,7 +15,5 @@ int main()
 
     Train::predict("/home/david/sketchbook/Paint/image.png", network);
 
-    Train::test("testData", network);
-
     return 0;
 }
