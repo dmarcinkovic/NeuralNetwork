@@ -22,7 +22,7 @@ template<int ROWS, int COLS>
 class Matrix
 {
 private:
-    std::array<std::array<double, COLS>, ROWS> m_Matrix;
+    std::vector<std::vector<double>> m_Matrix;
 
     void calculate(Matrix<ROWS, COLS> &result, const Matrix<ROWS, COLS> &matrix,
                    const std::function<double(double, double)> &binaryOperation) const
@@ -49,7 +49,9 @@ private:
     }
 
 public:
-    Matrix() = default;
+    Matrix()
+            : m_Matrix(ROWS, std::vector<double>(COLS))
+    {}
 
     Matrix<ROWS, COLS> &operator*=(double number)
     {
@@ -67,12 +69,12 @@ public:
         return result;
     }
 
-    std::array<double, COLS> &operator[](int index)
+    std::vector<double> &operator[](int index)
     {
         return m_Matrix[index];
     }
 
-    const std::array<double, COLS> &operator[](int index) const
+    const std::vector<double> &operator[](int index) const
     {
         return m_Matrix[index];
     }

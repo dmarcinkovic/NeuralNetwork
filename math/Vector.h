@@ -17,7 +17,7 @@ template<int N>
 class Vector
 {
 private:
-    std::array<double, N> m_Vector;
+    std::vector<double> m_Vector;
 
     void calculate(Vector<N> &result, const Vector<N> &vector,
                    const std::function<double(double, double)> &binaryOperation) const
@@ -30,7 +30,9 @@ private:
 
 public:
 
-    Vector() = default;
+    Vector()
+            : m_Vector(N)
+    {}
 
     double &operator[](int index)
     {
