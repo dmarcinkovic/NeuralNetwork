@@ -28,6 +28,23 @@ private:
         std::shuffle(data.begin(), data.end(), std::default_random_engine(seed));
     }
 
+    static inline Vector<SIZE> loadImageInVector(const std::uint8_t *image, int width, int height)
+    {
+        Vector<SIZE> data{};
+
+        for (int i = 0; i < height; ++i)
+        {
+            for (int j = 0; j < width; ++j)
+            {
+                int index = i * width + j;
+                double color = (image[3 * index] + image[3 * index + 1] + image[3 * index + 2]) / 3.0;
+                data[index] = color / 255.0;
+            }
+        }
+
+        return data;
+    }
+
 public:
     Data(Vector<SIZE> data, std::string label)
             : m_Data(std::move(data)), m_Label(std::move(label))
@@ -35,8 +52,6 @@ public:
 
     static Vector<SIZE> loadImage(const char *filename)
     {
-        Vector<SIZE> data{};
-
         int width, height, BPP;
         std::uint8_t *localBuffer = stbi_load(filename, &width, &height, &BPP, 3);
 
@@ -45,15 +60,7 @@ public:
             throw std::invalid_argument("Cannot load image " + std::string(filename));
         }
 
-        for (int i = 0; i < height; ++i)
-        {
-            for (int j = 0; j < width; ++j)
-            {
-                int index = i * width + j;
-                double color = (localBuffer[3 * index] + localBuffer[3 * index + 1] + localBuffer[3 * index + 2]) / 3.0;
-                data[index] = color / 255.0;
-            }
-        }
+        Vector<SIZE> data = loadImageInVector(localBuffer, width, height);
 
         stbi_image_free(localBuffer);
 
