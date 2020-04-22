@@ -50,7 +50,7 @@ public:
             : m_Data(std::move(data)), m_Label(std::move(label))
     {}
 
-    static Vector<SIZE> loadImage(const char *filename)
+    static Vector<SIZE> loadImage(const char *filename, int desiredImageWidth, int desiredImageHeight)
     {
         int width, height, BPP;
         std::uint8_t *localBuffer = stbi_load(filename, &width, &height, &BPP, 3);
@@ -60,6 +60,7 @@ public:
             throw std::invalid_argument("Cannot load image " + std::string(filename));
         }
 
+
         Vector<SIZE> data = loadImageInVector(localBuffer, width, height);
 
         stbi_image_free(localBuffer);
@@ -67,7 +68,7 @@ public:
         return data;
     }
 
-    static std::vector<Data> loadLabeledData(const char *directoryName)
+    static std::vector<Data> loadLabeledData(const char *directoryName, int desiredImageWidth, int desiredImageHeight)
     {
         std::filesystem::directory_iterator directoryIterator(directoryName);
         std::vector<Data> labeledData;
@@ -79,7 +80,7 @@ public:
 
             for (auto const &file : files)
             {
-                Vector<SIZE> image = loadImage(file.path().c_str());
+                Vector<SIZE> image = loadImage(file.path().c_str(), desiredImageWidth, desiredImageHeight);
                 labeledData.emplace_back(Data(image, label));
             }
         }
@@ -98,14 +99,16 @@ public:
         return m_Label;
     }
 
-    static std::vector<std::pair<Vector<SIZE>, std::string>> loadImagesFromDirectory(const char *directory)
+    static std::vector<std::pair<Vector<SIZE>, std::string>>
+    loadImagesFromDirectory(const char *directory, int desiredImageWidth, int desiredImageHeight)
     {
         std::vector<std::pair<Vector<SIZE>, std::string>> result;
         std::filesystem::directory_iterator directoryIterator(directory);
 
         for (auto const &image : directoryIterator)
         {
-            result.emplace_back(loadImage(image.path().c_str()), image.path().filename());
+            result.emplace_back(loadImage(image.path().c_str(), desiredImageWidth, desiredImageHeight),
+                                image.path().filename());
         }
 
         return result;

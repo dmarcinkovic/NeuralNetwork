@@ -5,7 +5,9 @@
 
 int main()
 {
-    constexpr const int INPUT = 28 * 28;
+    constexpr const int IMAGE_WIDTH = 28;
+    constexpr const int IMAGE_HEIGHT = 28;
+    constexpr const int INPUT = IMAGE_WIDTH * IMAGE_HEIGHT;
     constexpr const int HIDDEN = 128;
     constexpr const int OUTPUT = 10;
 
@@ -13,7 +15,7 @@ int main()
 
     network.loadTrainedModel("trainedModel.txt");
 
-    Train::predict("/home/david/sketchbook/Paint/image.png", network);
+    Train::predict("/home/david/sketchbook/Paint/image.png", network, IMAGE_WIDTH, IMAGE_HEIGHT);
 
     return 0;
 }

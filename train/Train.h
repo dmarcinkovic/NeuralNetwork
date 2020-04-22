@@ -15,9 +15,11 @@ class Train
 {
 public:
     template<int INPUT, int HIDDEN, int OUTPUT>
-    static void train(const char *directoryName, NeuralNetwork<INPUT, HIDDEN, OUTPUT> &network)
+    static void train(const char *directoryName, NeuralNetwork<INPUT, HIDDEN, OUTPUT> &network,
+                      int desiredImageWidth, int desiredImageHeight)
     {
-        std::vector<Data<INPUT>> trainData = Data<INPUT>::loadLabeledData(directoryName);
+        std::vector<Data<INPUT>> trainData = Data<INPUT>::loadLabeledData(directoryName, desiredImageWidth,
+                                                                          desiredImageHeight);
 
         constexpr static const int numberOfEpochs = 50;
 
@@ -43,9 +45,11 @@ public:
     }
 
     template<int INPUT, int HIDDEN, int OUTPUT>
-    static void test(const char *directoryName, const NeuralNetwork<INPUT, HIDDEN, OUTPUT> &network)
+    static void test(const char *directoryName, const NeuralNetwork<INPUT, HIDDEN, OUTPUT> &network,
+                     int desiredImageWidth, int desiredImageHeight)
     {
-        std::vector<Data<INPUT>> testData = Data<INPUT>::loadLabeledData(directoryName);
+        std::vector<Data<INPUT>> testData = Data<INPUT>::loadLabeledData(directoryName, desiredImageWidth,
+                                                                         desiredImageHeight);
 
         int correct = 0;
         for (auto &i : testData)
@@ -60,31 +64,34 @@ public:
     }
 
     template<int INPUT, int HIDDEN, int OUTPUT>
-    static void predict(const char *path, const NeuralNetwork<INPUT, HIDDEN, OUTPUT> &network)
+    static void predict(const char *path, const NeuralNetwork<INPUT, HIDDEN, OUTPUT> &network,
+                        int desiredImageWidth, int desiredImageHeight)
     {
         if (std::filesystem::is_directory(path))
         {
-            predictImagesFromDirectory(path, network);
+            predictImagesFromDirectory(path, network, desiredImageWidth, desiredImageHeight);
         } else
         {
-            predictImage(path, network);
+            predictImage(path, network, desiredImageWidth, desiredImageHeight);
         }
     }
 
 private:
     template<int INPUT, int HIDDEN, int OUTPUT>
-    static void predictImage(const char *imagePath, const NeuralNetwork<INPUT, HIDDEN, OUTPUT> &network)
+    static void predictImage(const char *imagePath, const NeuralNetwork<INPUT, HIDDEN, OUTPUT> &network,
+                             int width, int height)
     {
-        Vector<INPUT> image = Data<INPUT>::loadImage(imagePath);
+        Vector<INPUT> image = Data<INPUT>::loadImage(imagePath, width, height);
 
         auto const &result = network.guess(image);
         std::cout << "Prediction: " << result << "\n";
     }
 
     template<int INPUT, int HIDDEN, int OUTPUT>
-    static void predictImagesFromDirectory(const char *directory, const NeuralNetwork<INPUT, HIDDEN, OUTPUT> &network)
+    static void predictImagesFromDirectory(const char *directory, const NeuralNetwork<INPUT, HIDDEN, OUTPUT> &network,
+                                           int width, int height)
     {
-        auto images = Data<INPUT>::loadImagesFromDirectory(directory);
+        auto images = Data<INPUT>::loadImagesFromDirectory(directory, width, height);
 
         for (auto const&[image, imagePath] : images)
         {
