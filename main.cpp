@@ -11,8 +11,7 @@ int main()
 
     NeuralNetwork<INPUT, HIDDEN, OUTPUT> network({"0", "1", "2", "3", "4", "5", "6", "7", "8", "9"});
 
-//    network.loadTrainedModel("trainedModel.txt");
-    Train::train("trainingData", network);
+    network.loadTrainedModel("trainedModel.txt");
 
     Train::predict("/home/david/sketchbook/Paint/image.png", network);
 

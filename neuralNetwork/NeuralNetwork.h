@@ -20,6 +20,7 @@ private:
     constexpr static const double learningRate = 0.3;
 
     std::unordered_map<std::string, int> m_Labels;
+    std::vector<std::string> m_NameOfLabels;
 
     Matrix<HIDDEN, INPUT> m_InputHiddenWeights;
     Matrix<OUTPUT, HIDDEN> m_HiddenOutputWeights;
@@ -33,10 +34,12 @@ private:
 
 public:
     NeuralNetwork(const std::initializer_list<std::string> &labels)
+            : m_NameOfLabels(labels.size())
     {
         int counter = 0;
         for (auto const &label : labels)
         {
+            m_NameOfLabels[counter] = label;
             m_Labels[label] = counter++;
         }
 
@@ -53,7 +56,7 @@ public:
         backPropagation(answer);
     }
 
-    int guess(const Vector<INPUT> &input) const
+    const std::string &guess(const Vector<INPUT> &input) const
     {
         Vector<HIDDEN> hiddenNodes = m_InputHiddenWeights * input + m_InputBias;
         hiddenNodes.map(Util::getSigmoid());
@@ -62,7 +65,7 @@ public:
         output.map(Util::getSigmoid());
 
         auto maxNumber = std::max_element(output.begin(), output.end());
-        return maxNumber - output.begin();
+        return m_NameOfLabels[maxNumber - output.begin()];
     }
 
     void saveTrainedModel(const char *filename) const

@@ -19,7 +19,7 @@ public:
     {
         std::vector<Data<INPUT>> trainData = Data<INPUT>::loadLabeledData(directoryName);
 
-        constexpr static const int numberOfEpochs = 1;
+        constexpr static const int numberOfEpochs = 50;
 
         double totalDuration = 0;
         for (int j = 0; j < numberOfEpochs; ++j)
@@ -50,9 +50,7 @@ public:
         int correct = 0;
         for (auto &i : testData)
         {
-            int guess = network.guess(i.getData());
-
-            if (guess == std::stoi(i.getLabel()))
+            if (network.guess(i.getData()) == i.getLabel())
             {
                 ++correct;
             }
@@ -79,7 +77,7 @@ private:
     {
         Vector<INPUT> image = Data<INPUT>::loadImage(imagePath);
 
-        int result = network.guess(image);
+        auto const &result = network.guess(image);
         std::cout << "Prediction: " << result << "\n";
     }
 
@@ -90,7 +88,7 @@ private:
 
         for (auto const&[image, imagePath] : images)
         {
-            int guess = network.guess(image);
+            auto const &guess = network.guess(image);
 
             std::cout << "Image " << imagePath << " represents " << guess << '\n';
         }

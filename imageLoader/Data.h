@@ -81,7 +81,7 @@ public:
         return labeledData;
     }
 
-    [[nodiscard]] const Vector<SIZE> &getData() const
+    const Vector<SIZE> &getData() const
     {
         return m_Data;
     }
