@@ -10,12 +10,16 @@
 
 #include <iostream>
 #include <fstream>
+#include <unordered_map>
+#include <string>
 
 template<int INPUT, int HIDDEN, int OUTPUT>
 class NeuralNetwork
 {
 private:
     constexpr static const double learningRate = 0.3;
+
+    std::unordered_map<std::string, int> m_Labels;
 
     Matrix<HIDDEN, INPUT> m_InputHiddenWeights;
     Matrix<OUTPUT, HIDDEN> m_HiddenOutputWeights;
@@ -28,8 +32,14 @@ private:
     Vector<OUTPUT> m_OutputNodes;
 
 public:
-    NeuralNetwork()
+    NeuralNetwork(const std::initializer_list<std::string> &labels)
     {
+        int counter = 0;
+        for (auto const &label : labels)
+        {
+            m_Labels[label] = counter++;
+        }
+
         m_InputHiddenWeights = Matrix<HIDDEN, INPUT>::getRandomMatrix(INPUT, HIDDEN);
         m_HiddenOutputWeights = Matrix<OUTPUT, HIDDEN>::getRandomMatrix(HIDDEN, OUTPUT);
 
@@ -73,6 +83,11 @@ public:
                >> m_InputBias >> m_HiddenBias >> m_HiddenNodes;
 
         reader.close();
+    }
+
+    int getLabel(const std::string &label) const
+    {
+        return m_Labels.at(label);
     }
 
 private:

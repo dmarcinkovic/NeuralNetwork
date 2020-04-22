@@ -19,7 +19,7 @@ public:
     {
         std::vector<Data<INPUT>> trainData = Data<INPUT>::loadLabeledData(directoryName);
 
-        constexpr static const int numberOfEpochs = 50;
+        constexpr static const int numberOfEpochs = 1;
 
         double totalDuration = 0;
         for (int j = 0; j < numberOfEpochs; ++j)
@@ -27,8 +27,12 @@ public:
             auto start = std::chrono::high_resolution_clock::now();
             for (auto &i : trainData)
             {
-                network.train(i.getData(), Data<OUTPUT>::getAnswerData(i.getLabel()));
+                Vector<OUTPUT> data{};
+                data[network.getLabel(i.getLabel())] = 1;
+
+                network.train(i.getData(), data);
             }
+
             auto end = std::chrono::high_resolution_clock::now();
             totalDuration += std::chrono::duration_cast<std::chrono::seconds>(end - start).count();
 

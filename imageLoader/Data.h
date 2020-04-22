@@ -91,17 +91,6 @@ public:
         return m_Label;
     }
 
-    template<int N>
-    static Vector<N> getAnswerData(const std::string &label)
-    {
-        int number = std::stoi(label);
-
-        Vector<N> answer{};
-
-        answer[number] = 1;
-        return answer;
-    }
-
     static std::vector<std::pair<Vector<SIZE>, std::string>> loadImagesFromDirectory(const char *directory)
     {
         std::vector<std::pair<Vector<SIZE>, std::string>> result;
