@@ -63,19 +63,21 @@ public:
         }
 
         Vector<SIZE> data{};
+
+        std::uint8_t *resizedImage;
         if (width != desiredImageWidth || height != desiredImageHeight)
         {
-            std::uint8_t *resizedImage = new std::uint8_t[numberOfChannels];
+            resizedImage = new std::uint8_t[numberOfChannels * desiredImageHeight * desiredImageWidth];
             stbir_resize_uint8(localBuffer, width, height, 0, resizedImage, desiredImageWidth, desiredImageHeight, 0,
                                numberOfChannels);
 
             data = loadImageInVector(resizedImage, desiredImageWidth, desiredImageHeight);
+
+            delete[] resizedImage;
         } else
         {
             data = loadImageInVector(localBuffer, width, height);
         }
-
-        Vector<SIZE> data = loadImageInVector(localBuffer, width, height);
 
         stbi_image_free(localBuffer);
 
