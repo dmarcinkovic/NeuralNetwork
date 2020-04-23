@@ -13,6 +13,7 @@
 
 #include "stb_image.h"
 #include "../math/Vector.h"
+#include "stb_image_resize.h"
 
 template<int SIZE>
 class Data
@@ -52,14 +53,27 @@ public:
 
     static Vector<SIZE> loadImage(const char *filename, int desiredImageWidth, int desiredImageHeight)
     {
+        constexpr int numberOfChannels = 3;
         int width, height, BPP;
-        std::uint8_t *localBuffer = stbi_load(filename, &width, &height, &BPP, 3);
+        std::uint8_t *localBuffer = stbi_load(filename, &width, &height, &BPP, numberOfChannels);
 
         if (localBuffer == nullptr)
         {
             throw std::invalid_argument("Cannot load image " + std::string(filename));
         }
 
+        Vector<SIZE> data{};
+        if (width != desiredImageWidth || height != desiredImageHeight)
+        {
+            std::uint8_t *resizedImage = new std::uint8_t[numberOfChannels];
+            stbir_resize_uint8(localBuffer, width, height, 0, resizedImage, desiredImageWidth, desiredImageHeight, 0,
+                               numberOfChannels);
+
+            data = loadImageInVector(resizedImage, desiredImageWidth, desiredImageHeight);
+        } else
+        {
+            data = loadImageInVector(localBuffer, width, height);
+        }
 
         Vector<SIZE> data = loadImageInVector(localBuffer, width, height);
 
