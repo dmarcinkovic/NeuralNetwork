@@ -12,6 +12,9 @@
 #include "../imageLoader/Data.h"
 #include "../neuralNetwork/NeuralNetwork.h"
 
+/**
+ *
+ */
 class Train
 {
 private:
@@ -105,11 +108,11 @@ private:
     {
         auto images = Data<INPUT>::loadImagesFromDirectory(directory, imageWidth, imageHeight);
 
-        for (auto const&[image, imagePath] : images)
+        for (auto const& data : images)
         {
-            int guess = network.guess(image);
+            int guess = network.guess(data.getData());
 
-            std::cout << "Image " << imagePath << " represents " << m_NameOfLabels[guess] << '\n';
+            std::cout << "Image " << data.getLabel() << " represents " << m_NameOfLabels[guess] << '\n';
         }
     }
 };

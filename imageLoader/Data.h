@@ -51,6 +51,16 @@ public:
             : m_Data(std::move(data)), m_Label(std::move(label))
     {}
 
+    const Vector<SIZE> &getData() const
+    {
+        return m_Data;
+    }
+
+    [[nodiscard]] const std::string &getLabel() const
+    {
+        return m_Label;
+    }
+
     static Vector<SIZE> loadImage(const char *filename, int desiredImageWidth, int desiredImageHeight)
     {
         constexpr int numberOfChannels = 3;
@@ -105,20 +115,10 @@ public:
         return labeledData;
     }
 
-    const Vector<SIZE> &getData() const
-    {
-        return m_Data;
-    }
-
-    [[nodiscard]] const std::string &getLabel() const
-    {
-        return m_Label;
-    }
-
-    static std::vector<std::pair<Vector<SIZE>, std::string>>
+    static std::vector<Data>
     loadImagesFromDirectory(const char *directory, int desiredImageWidth, int desiredImageHeight)
     {
-        std::vector<std::pair<Vector<SIZE>, std::string>> result;
+        std::vector<Data> result;
         std::filesystem::directory_iterator directoryIterator(directory);
 
         for (auto const &image : directoryIterator)
