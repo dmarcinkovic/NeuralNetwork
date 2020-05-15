@@ -106,6 +106,7 @@ public:
      * that it is not necessary to re-train neural network during the next use.
      *
      * @param filename File in which all weights and biases will be stored.
+     * @see loadTrainedModel
      */
     void saveTrainedModel(const char *filename) const
     {
@@ -122,6 +123,7 @@ public:
      * that it is not necessary to re-train neural network in every use.
      *
      * @param filename File in which all weights and biases are stored.
+     * @see saveTrainedModel
      */
     void loadTrainedModel(const char *filename)
     {
