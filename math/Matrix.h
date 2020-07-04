@@ -36,38 +36,10 @@ private:
         }
     }
 
-    void calculate(Matrix<ROWS, COLS> &result, double number,
-                   const std::function<double(double, double)> &binaryOperation) const
-    {
-        for (int i = 0; i < ROWS; ++i)
-        {
-            for (int j = 0; j < COLS; ++j)
-            {
-                result[i][j] = m_Matrix[i][j] * number;
-            }
-        }
-    }
-
 public:
     Matrix()
             : m_Matrix(ROWS, std::vector<double>(COLS))
     {}
-
-    Matrix<ROWS, COLS> &operator*=(double number)
-    {
-        calculate(*this, number, std::multiplies<double>());
-
-        return *this;
-    }
-
-    Matrix<ROWS, COLS> operator*(int number)
-    {
-        Matrix<ROWS, COLS> result{};
-
-        calculate(result, number, std::multiplies<double>());
-
-        return result;
-    }
 
     std::vector<double> &operator[](int index)
     {
